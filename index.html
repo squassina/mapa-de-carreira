@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultoria de Carreira | Diagnóstico Integrado RIASEC, Schein & DISC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF8F5;
+      color: #262A28;
+      overflow-x: hidden;
+    }
+    .font-serif-display {
+      font-family: 'Lora', serif;
+    }
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 290px;
+      max-height: 360px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 320px;
+      }
+    }
+    .option-card {
+      transition: all 0.18s ease;
+    }
+    .option-card:hover {
+      transform: translateY(-1px);
+      border-color: #1E4D5C;
+      background-color: #F2F6F7;
+    }
+    .option-card.selected {
+      border-color: #1E4D5C;
+      background-color: #E6F0F2;
+      box-shadow: 0 4px 12px rgba(30, 77, 92, 0.10);
+    }
+    .fade-in {
+      animation: fadeIn 0.28s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#1E4D5C] selection:text-white">
+  <!-- Chosen Palette: Warm Sand & Calm Slate Harmony -->
+  <!-- Application Structure Plan: Designed a three-view interactive Career Consultant SPA centered on low-friction user experience. View 1 (Entrevista Guiada) presents the 14 multiple-choice questions sequentially across three thematic modules (RIASEC, Schein Anchors, DISC) with auto-advance, module progress tracking, and a sample profile trigger so users can respond intuitively without overthinking. View 2 (Painel de Diagnóstico) dynamically synthesizes user choices into a personalized consultant briefing, three responsive Chart.js Canvas visualizations, cross-dimensional synergy/tension analysis, and an actionable career roadmap spanning diverse industries. View 3 (Base Metodológica) lets users explore the scientific integration of Holland, Schein, and Marston alongside an interactive multisector ecosystem matrix. -->
+  <!-- Visualization & Content Choices: 1. RIASEC Interests -> Compare 6 vocational vectors -> Radar Chart (Chart.js Canvas) -> Hover tooltips & dynamic ranking -> Shows vocational balance clearly. 2. Schein Career Anchors -> Rank 8 non-negotiable career values -> Horizontal Bar Chart (Chart.js Canvas) -> Interactive breakdown -> Best for comparing 8 multi-word labels cleanly. 3. DISC Behavioral Style -> Show proportional behavioral drivers -> Doughnut Chart (Chart.js Canvas) -> Interactive legend & tooltips -> Highlights primary/secondary behavioral style. 4. Cross-Analysis Matrix -> Organize ecosystem & role matches across multiple industries -> Interactive Filterable HTML/Tailwind Cards & Matrix -> Filter by Anchor or DISC -> Replaces static tables with explorable insights. -->
+  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+  <header class="bg-[#FFFFFF] border-b border-[#E6E2D8] sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-[#1E4D5C] text-[#FAF8F5] flex items-center justify-center text-xl font-semibold shadow-sm shrink-0">
+          🧭
+        </div>
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#C86D51]">Consultoria Vocacional & Executiva</span>
+          <h1 class="text-lg sm:text-xl font-bold text-[#262A28] leading-tight">Diagnóstico Tridimensional de Carreira</h1>
+        </div>
+      </div>
+
+      <nav class="flex flex-wrap items-center gap-2" aria-label="Navegação principal">
+        <button id="nav-interview" onclick="switchView('interview')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors bg-[#1E4D5C] text-white">
+          1. Entrevista Guiada
+        </button>
+        <button id="nav-results" onclick="switchView('results')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8] flex items-center gap-1.5">
+          <span>2. Diagnóstico & Explicação</span>
+          <span id="results-badge" class="text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]">0/14</span>
+        </button>
+        <button id="nav-methodology" onclick="switchView('methodology')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">
+          3. Base Metodológica
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <section id="view-interview" class="fade-in space-y-6">
+      <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#EFECE6] pb-5 mb-6">
+          <div class="space-y-2 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4EFEA] text-[#9E523B] text-xs font-semibold">
+              <span>🎙️ Sessão de Entrevista Estruturada</span>
+              <span>•</span>
+              <span>Todas as Áreas Profissionais</span>
+            </div>
+            <h2 class="font-serif-display text-2xl sm:text-3xl font-semibold text-[#262A28]">
+              Vamos mapear sua identidade profissional sem complicação
+            </h2>
+            <p class="text-sm sm:text-base text-[#525855] leading-relaxed">
+              Como seu consultor de carreiras, conduzo esta entrevista em três etapas rápidas baseadas nos modelos <strong>RIASEC</strong> (o que você gosta de fazer), <strong>Âncoras de Schein</strong> (seus valores inegociáveis) e <strong>DISC</strong> (como você age e se comunica). Aplicável a qualquer área — saúde, direito, educação, engenharia, artes, negócios, setor público ou tecnologia —, basta escolher intuitivamente a opção que melhor reflete sua reação natural.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
+            <button onclick="fillDemoProfile()" class="px-4 py-2.5 rounded-xl border border-[#D5CFC2] bg-[#FAF8F5] hover:bg-[#EFECE6] text-xs font-semibold text-[#3C423F] transition-colors text-center">
+              ✨ Simular Perfil Exemplo
+            </button>
+            <button onclick="resetQuiz()" class="px-4 py-2 rounded-xl text-xs font-medium text-[#757C78] hover:text-[#262A28] transition-colors text-center">
+              ↺ Reiniciar Respostas
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+          <div id="mod-card-1" class="p-3.5 rounded-xl border border-[#1E4D5C] bg-[#F2F6F7] transition-all">
+            <div class="flex items-center justify-between text-xs font-bold text-[#1E4D5C] uppercase tracking-wide">
+              <span>Módulo I • RIASEC</span>
+              <span id="mod-count-1">0/4</span>
+            </div>
+            <p class="text-xs text-[#4A504D] mt-1">Interesses Vocacionais e Tarefas</p>
+          </div>
+          <div id="mod-card-2" class="p-3.5 rounded-xl border border-[#E6E2D8] bg-[#FAF8F5] transition-all">
+            <div class="flex items-center justify-between text-xs font-bold text-[#525855] uppercase tracking-wide">
+              <span>Módulo II • Schein</span>
+              <span id="mod-count-2">0/4</span>
+            </div>
+            <p class="text-xs text-[#525855] mt-1">Âncoras e Valores Inegociáveis</p>
+          </div>
+          <div id="mod-card-3" class="p-3.5 rounded-xl border border-[#E6E2D8] bg-[#FAF8F5] transition-all">
+            <div class="flex items-center justify-between text-xs font-bold text-[#525855] uppercase tracking-wide">
+              <span>Módulo III • DISC</span>
+              <span id="mod-count-3">0/6</span>
+            </div>
+            <p class="text-xs text-[#525855] mt-1">Estilo Comportamental e Reação</p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <div class="flex items-center justify-between text-xs font-semibold text-[#525855] mb-2">
+            <span id="progress-label">Questão 1 de 14</span>
+            <span id="progress-percent">0% concluído</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#EFECE6] rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-[#1E4D5C] transition-all duration-300 rounded-full" style="width: 0%"></div>
+          </div>
+          <div id="question-dots" class="flex flex-wrap gap-1.5 mt-3"></div>
+        </div>
+
+        <div id="question-stage" class="bg-[#FAF8F5] border border-[#E6E2D8] rounded-2xl p-5 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span id="q-module-badge" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-[#E6F0F2] text-[#1E4D5C]">
+              Módulo I: Interesses Vocacionais (RIASEC)
+            </span>
+            <label class="inline-flex items-center gap-2 text-xs text-[#525855] cursor-pointer select-none">
+              <input id="auto-advance-toggle" type="checkbox" checked class="rounded border-[#C9C3B6] text-[#1E4D5C] focus:ring-[#1E4D5C]">
+              <span>Avançar automaticamente ao escolher</span>
+            </label>
+          </div>
+
+          <h3 id="q-text" class="text-lg sm:text-xl font-bold text-[#262A28] mb-5 leading-snug"></h3>
+
+          <div id="q-options" class="space-y-2.5"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 mt-7 pt-5 border-t border-[#E6E2D8]">
+            <button id="btn-prev" onclick="prevQuestion()" class="px-4 py-2.5 rounded-xl border border-[#D5CFC2] bg-white text-sm font-semibold text-[#3C423F] hover:bg-[#F2EFE9] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              ← Anterior
+            </button>
+
+            <div class="flex items-center gap-3">
+              <button id="btn-next" onclick="nextQuestion()" class="px-5 py-2.5 rounded-xl bg-[#1E4D5C] text-white text-sm font-semibold hover:bg-[#163B47] transition-colors">
+                Próxima →
+              </button>
+              <button id="btn-finish" onclick="finishInterview()" class="hidden px-6 py-2.5 rounded-xl bg-[#C86D51] text-white text-sm font-bold hover:bg-[#B25B40] shadow-sm transition-colors">
+                Concluir e Ver Meu Diagnóstico ✓
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-results" class="hidden fade-in space-y-8">
+      <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+          <div class="space-y-2 max-w-3xl">
+            <span class="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#E6F0F2] text-[#1E4D5C]">
+              📊 Devolutiva Analítica do Consultor
+            </span>
+            <h2 class="font-serif-display text-2xl sm:text-3xl font-semibold text-[#262A28]">
+              Seu Perfil Tridimensional e Parecer de Carreira
+            </h2>
+            <p class="text-sm sm:text-base text-[#525855] leading-relaxed">
+              Esta seção consolida suas respostas nos três instrumentos psicométricos para revelar <strong>o que</strong> engaja você (Código Holland), <strong>por que</strong> você toma decisões de carreira (Âncora de Schein) e <strong>como</strong> você opera sob pressão e em equipe (Perfil DISC), traduzindo os dados em recomendações práticas para diferentes setores.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <button onclick="switchView('interview')" class="px-4 py-2.5 rounded-xl border border-[#D5CFC2] bg-[#FAF8F5] hover:bg-[#EFECE6] text-xs font-semibold text-[#262A28] transition-colors">
+              ✎ Revisar Minhas Respostas
+            </button>
+          </div>
+        </div>
+
+        <div id="incomplete-alert" class="hidden mt-6 p-4 rounded-xl bg-[#FDF4F0] border border-[#EBC7B9] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="text-sm text-[#7D3C27]">
+            <strong>Entrevista em andamento:</strong> Você respondeu <span id="alert-answered-count">0</span> de 14 questões. Complete todas as perguntas para obter um diagnóstico preciso ou simule um perfil para explorar o painel.
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button onclick="switchView('interview')" class="px-3.5 py-2 rounded-lg bg-[#C86D51] text-white text-xs font-semibold hover:bg-[#B25B40]">
+              Continuar Entrevista
+            </button>
+            <button onclick="fillDemoProfile()" class="px-3.5 py-2 rounded-lg bg-white border border-[#D5CFC2] text-xs font-semibold text-[#262A28]">
+              Simular Perfil
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
+          <div class="p-5 rounded-2xl bg-[#F4F8F7] border border-[#CFE0DC]">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#3B665B]">1. Interesses (RIASEC)</span>
+              <span class="text-lg">🧭</span>
+            </div>
+            <div id="kpi-riasec-code" class="text-2xl sm:text-3xl font-bold text-[#1E4D5C] tracking-wide">—</div>
+            <p id="kpi-riasec-name" class="text-sm font-semibold text-[#262A28] mt-1">Aguardando respostas</p>
+            <p id="kpi-riasec-desc" class="text-xs text-[#525855] mt-2 leading-relaxed">Define as áreas e atividades que geram satisfação intrínseca.</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-[#F5F6FA] border border-[#D3D8E8]">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#4B5B82]">2. Valor Central (Schein)</span>
+              <span class="text-lg">⚓</span>
+            </div>
+            <div id="kpi-schein-code" class="text-xl sm:text-2xl font-bold text-[#2E3B5B] leading-snug">—</div>
+            <p id="kpi-schein-sub" class="text-xs font-semibold text-[#4B5B82] mt-1">Âncora de Carreira Dominante</p>
+            <p id="kpi-schein-desc" class="text-xs text-[#525855] mt-2 leading-relaxed">O critério inegociável que sustenta suas decisões profissionais.</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-[#FBF7F0] border border-[#E8DCC4]">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#9A6E27]">3. Estilo (DISC)</span>
+              <span class="text-lg">⚡</span>
+            </div>
+            <div id="kpi-disc-code" class="text-2xl sm:text-3xl font-bold text-[#8A5E1B]">—</div>
+            <p id="kpi-disc-name" class="text-sm font-semibold text-[#262A28] mt-1">Aguardando respostas</p>
+            <p id="kpi-disc-desc" class="text-xs text-[#525855] mt-2 leading-relaxed">Como você executa tarefas, se comunica e reage a pressões.</p>
+          </div>
+        </div>
+
+        <div class="mt-7 p-6 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8]">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="text-xl">💬</span>
+            <h3 class="font-serif-display text-lg sm:text-xl font-semibold text-[#262A28]">Síntese Personalizada do Consultor</h3>
+          </div>
+          <div id="consultant-narrative" class="space-y-3 text-sm sm:text-base text-[#3C423F] leading-relaxed"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#3B665B]">Módulo I • Holland Code</span>
+            <h3 class="text-lg font-bold text-[#262A28] mt-1">Mapa de Interesses RIASEC</h3>
+            <p class="text-xs text-[#525855] mt-1 mb-4 leading-relaxed">
+              Distribuição dos seis vetores de interesse vocacional. Os três maiores índices formam seu código de exploração profissional.
+            </p>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-riasec"></canvas>
+          </div>
+          <div id="riasec-breakdown" class="mt-4 pt-3 border-t border-[#EFECE6] text-xs text-[#4A504D] space-y-1.5"></div>
+        </div>
+
+        <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#4B5B82]">Módulo II • Edgar Schein</span>
+            <h3 class="text-lg font-bold text-[#262A28] mt-1">Hierarquia de Âncoras</h3>
+            <p class="text-xs text-[#525855] mt-1 mb-4 leading-relaxed">
+              Intensidade de suas motivações centrais. A âncora líder funciona como filtro decisório para aceitar ou recusar propostas.
+            </p>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-schein"></canvas>
+          </div>
+          <div id="schein-breakdown" class="mt-4 pt-3 border-t border-[#EFECE6] text-xs text-[#4A504D] space-y-1.5"></div>
+        </div>
+
+        <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#9A6E27]">Módulo III • Marston</span>
+            <h3 class="text-lg font-bold text-[#262A28] mt-1">Dinâmica Comportamental DISC</h3>
+            <p class="text-xs text-[#525855] mt-1 mb-4 leading-relaxed">
+              Proporção dos seus padrões observáveis de comunicação, ritmo de decisão e resposta a mudanças organizacionais.
+            </p>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-disc"></canvas>
+          </div>
+          <div id="disc-breakdown" class="mt-4 pt-3 border-t border-[#EFECE6] text-xs text-[#4A504D] space-y-1.5"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#1E4D5C]">Interseção Diagnóstica</span>
+              <h3 class="font-serif-display text-xl font-semibold text-[#262A28] mt-0.5">Ecossistema Ideal e Cargos Sugeridos</h3>
+            </div>
+            <span class="text-2xl">🏛️</span>
+          </div>
+          <p class="text-xs sm:text-sm text-[#525855] leading-relaxed">
+            O cruzamento entre sua Âncora de Carreira dominante e seu estilo DISC revela o ambiente organizacional e exemplos de carreiras em múltiplos setores onde sua produtividade floresce.
+          </p>
+          <div id="ecosystem-card" class="p-5 rounded-xl bg-[#F2F6F7] border border-[#CFE0DC] space-y-3"></div>
+          <div id="tension-alert-card" class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E6E2D8] space-y-1.5"></div>
+        </div>
+
+        <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#C86D51]">Plano de Ação Estratégico</span>
+              <h3 class="font-serif-display text-xl font-semibold text-[#262A28] mt-0.5">4 Diretrizes para Sua Trajetória</h3>
+            </div>
+            <span class="text-2xl">🎯</span>
+          </div>
+          <p class="text-xs sm:text-sm text-[#525855] leading-relaxed">
+            Recomendações práticas fundamentadas na aplicação clínica e corporativa do relatório para orientar suas próximas escolhas profissionais.
+          </p>
+          <div id="action-plan-list" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-methodology" class="hidden fade-in space-y-8">
+      <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="max-w-3xl space-y-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#F4EFEA] text-[#9E523B]">
+            📚 Fundamentação Científica e Psicométrica
+          </span>
+          <h2 class="font-serif-display text-2xl sm:text-3xl font-semibold text-[#262A28]">
+            Por que integrar RIASEC, Âncoras de Schein e DISC?
+          </h2>
+          <p class="text-sm sm:text-base text-[#525855] leading-relaxed">
+            Nesta seção, você pode explorar a arquitetura teórica do instrumento utilizado na entrevista. A utilização isolada de um único teste apresenta limitações estruturais; a convergência dessas três metodologias consagradas oferece um diagnóstico completo sobre <strong>o que</strong> você gosta de fazer, <strong>por que</strong> permanece ou muda de emprego e <strong>como</strong> interage com equipes em qualquer setor.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="p-5 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#1E4D5C]">Modelo 1 • Holland (1959)</span>
+              <span class="text-xl">🧭</span>
+            </div>
+            <h3 class="text-lg font-bold text-[#262A28]">RIASEC (Código Holland)</h3>
+            <p class="text-xs text-[#525855] leading-relaxed">
+              Adotado pela base <em>O*NET</em> do Departamento do Trabalho dos EUA, avalia o interesse e o prazer percebido em seis tipos de atividades: Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
+            </p>
+            <div class="pt-2 border-t border-[#E6E2D8] text-xs font-semibold text-[#1E4D5C]">
+              Pergunta-chave: "O que eu gosto de fazer?"
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#4B5B82]">Modelo 2 • Edgar Schein (MIT)</span>
+              <span class="text-xl">⚓</span>
+            </div>
+            <h3 class="text-lg font-bold text-[#262A28]">Âncoras de Carreira</h3>
+            <p class="text-xs text-[#525855] leading-relaxed">
+              Identifica as autopercepções de competência, motivos centrais e valores dos quais o profissional não abre mão em momentos de crise ou escolha difícil, garantindo alinhamento cultural e retenção.
+            </p>
+            <div class="pt-2 border-t border-[#E6E2D8] text-xs font-semibold text-[#4B5B82]">
+              Pergunta-chave: "Por que eu faço minhas escolhas?"
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#9A6E27]">Modelo 3 • W. M. Marston</span>
+              <span class="text-xl">⚡</span>
+            </div>
+            <h3 class="text-lg font-bold text-[#262A28]">Comportamento DISC</h3>
+            <p class="text-xs text-[#525855] leading-relaxed">
+              Categoriza padrões observáveis em Dominância, Influência, Estabilidade e Conformidade. Possui alta plasticidade situacional, orientando o desenvolvimento de liderança e gestão de conflitos.
+            </p>
+            <div class="pt-2 border-t border-[#E6E2D8] text-xs font-semibold text-[#9A6E27]">
+              Pergunta-chave: "Como eu executo e me comunico?"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="space-y-1.5 max-w-2xl">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#1E4D5C]">Explorador Interativo Multissetorial</span>
+            <h3 class="font-serif-display text-xl sm:text-2xl font-semibold text-[#262A28]">
+              Matriz de Interseção: Âncoras × DISC × Ecossistema
+            </h3>
+            <p class="text-xs sm:text-sm text-[#525855]">
+              Filtre pelo estilo DISC para explorar como cada Âncora de Carreira de Schein se traduz em ecossistemas e funções exemplares nas áreas da saúde, direito, educação, indústria, artes, setor público e negócios.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="filterMatrix('ALL')" data-filter="ALL" class="matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1E4D5C] text-white">Todos (8)</button>
+            <button onclick="filterMatrix('D')" data-filter="D" class="matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">Dominância (D)</button>
+            <button onclick="filterMatrix('I')" data-filter="I" class="matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">Influência (I)</button>
+            <button onclick="filterMatrix('S')" data-filter="S" class="matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">Estabilidade (S)</button>
+            <button onclick="filterMatrix('C')" data-filter="C" class="matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">Conformidade (C)</button>
+          </div>
+        </div>
+
+        <div id="matrix-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#FFFFFF] border-t border-[#E6E2D8] mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#757C78]">
+      <span>Instrumento Multidimensional de Avaliação Vocacional e Diagnóstico de Carreira</span>
+      <span>Baseado nos modelos RIASEC (Holland), Âncoras de Carreira (Schein) e DISC (Marston)</span>
+    </div>
+  </footer>
+
+  <script>
+    const QUESTIONS = [
+      {
+        id: 1,
+        module: 1,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "1. Diante de um projeto profissional iminente, qual tipo de atividade gera o maior nível de motivação intrínseca?",
+        options: [
+          { key: "A", code: "R", text: "Construir, reparar, operar equipamentos ou realizar intervenções práticas e técnicas em campo ou estruturas." },
+          { key: "B", code: "I", text: "Investigar dados, resolver problemas complexos por meio de métodos científicos e analisar teorias." },
+          { key: "C", code: "A", text: "Criar conceitos originais, desenhar peças visuais, redigir conteúdos expressivos ou desenvolver soluções fora dos padrões convencionais." },
+          { key: "D", code: "S", text: "Ensinar, orientar pessoas, prestar assistência humana, atuar em mediação interpessoal ou treinar equipes." },
+          { key: "E", code: "E", text: "Convencer clientes, negociar acordos comerciais, liderar iniciativas estratégicas e assumir responsabilidade por metas." },
+          { key: "F", code: "C", text: "Organizar registros, gerenciar fluxos administrativos ou jurídicos, auditar conformidade e estruturar processos." }
+        ]
+      },
+      {
+        id: 2,
+        module: 1,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "2. Qual tarefa profissional é realizada com maior fluidez, gerando a sensação de engajamento natural e menor percepção do tempo?",
+        options: [
+          { key: "A", code: "R", text: "Atividades práticas com ferramentas, procedimentos técnicos manuais ou trabalhos de campo." },
+          { key: "B", code: "I", text: "Leitura de estudos e diagnósticos analíticos, identificação de causas-raiz e elaboração de pareceres lógicos." },
+          { key: "C", code: "A", text: "Atividades de design, redação criativa, composição ou proposição de formatos inovadores sem regras rígidas." },
+          { key: "D", code: "S", text: "Aconselhamento de pessoas, desenvolvimento de planos de cuidado ou aprendizagem e mediação de conflitos." },
+          { key: "E", code: "E", text: "Realização de apresentações persuasivas para decisores, coordenação comercial ou articulação de parcerias." },
+          { key: "F", code: "C", text: "Controle de rotinas operacionais, auditoria de documentos, verificação de normas e gestão de arquivos." }
+        ]
+      },
+      {
+        id: 3,
+        module: 1,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "3. Em uma eventual indicação para liderar uma frente de trabalho especial nos próximos meses, a preferência recairia sobre:",
+        options: [
+          { key: "A", code: "R", text: "A montagem ou execução prática da infraestrutura física, clínica ou operacional do projeto." },
+          { key: "B", code: "I", text: "O estudo detalhado de viabilidade, pesquisa diagnóstica e análise preditiva dos cenários possíveis." },
+          { key: "C", code: "A", text: "O desenvolvimento da identidade de marca, expressão visual, narrativa ou inovação conceitual da entrega." },
+          { key: "D", code: "S", text: "O programa de acolhimento, capacitação, desenvolvimento humano e suporte aos envolvidos." },
+          { key: "E", code: "E", text: "A negociação de orçamento, captação de recursos e defesa da proposta perante a direção." },
+          { key: "F", code: "C", text: "O mapeamento minucioso dos processos, governança, prazos e controle de qualidade das entregas." }
+        ]
+      },
+      {
+        id: 4,
+        module: 1,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "4. Qual ambiente profissional é percebido como o mais estimulante para o desenvolvimento individual?",
+        options: [
+          { key: "A", code: "R", text: "Ambientes operacionais, oficinas, centros cirúrgicos, laboratórios práticos ou campos de trabalho direto." },
+          { key: "B", code: "I", text: "Centros de pesquisa, núcleos analíticos, bibliotecas especializadas e laboratórios científicos ou tecnológicos." },
+          { key: "C", code: "A", text: "Agências de criação, estúdios de arquitetura e design, editoras, espaços culturais e núcleos de inovação." },
+          { key: "D", code: "S", text: "Instituições de ensino, hospitais e clínicas, ONGs, centros de desenvolvimento humano ou recursos humanos." },
+          { key: "E", code: "E", text: "Salas de negociação, ambientes empresariais competitivos, empreendimentos em expansão ou frentes comerciais." },
+          { key: "F", code: "C", text: "Departamentos de controladoria, escritórios jurídicos regulatórios, auditoria interna ou gestão pública estruturada." }
+        ]
+      },
+      {
+        id: 5,
+        module: 2,
+        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
+        text: "5. Ao analisar uma nova oportunidade profissional, qual fator possui peso decisivo absoluto para a aceitação da proposta?",
+        options: [
+          { key: "A", code: "TF", text: "A oportunidade de aprofundar o conhecimento técnico e tornar-se uma referência em uma área de especialização." },
+          { key: "B", code: "GG", text: "A perspectiva clara de ascensão para cargos de gestão geral, diretoria e liderança executiva ampla." },
+          { key: "C", code: "AU", text: "A garantia de autonomia para gerir horários, ritmo de trabalho, local de atuação e escolhas metodológicas." },
+          { key: "D", code: "SE", text: "A estabilidade do vínculo profissional, a previsibilidade financeira e a segurança oferecida pela instituição." },
+          { key: "E", code: "EC", text: "A possibilidade de empreender, criar um novo negócio do zero ou desenvolver projetos com marca pessoal." },
+          { key: "F", code: "SV", text: "O alinhamento do trabalho com causas sociais, valores éticos profundos e a promoção do bem-estar comunitário." },
+          { key: "G", code: "CH", text: "A presença constante de metas extremamente desafiadoras e a necessidade de resolver problemas considerados insolúveis." },
+          { key: "H", code: "LS", text: "A garantia de que a rotina profissional não interferirá no equilíbrio com a vida familiar e com os interesses pessoais." }
+        ]
+      },
+      {
+        id: 6,
+        module: 2,
+        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
+        text: "6. O sentimento de frustração ou insatisfação na trajetória profissional seria desencadeado com maior intensidade por:",
+        options: [
+          { key: "A", code: "TF", text: "Ser promovido a um cargo administrativo que distancie o profissional do exercício prático de sua especialidade." },
+          { key: "B", code: "GG", text: "Permanecer restrito a uma função técnica sem acesso a posições de comando e tomada de decisão estratégica." },
+          { key: "C", code: "AU", text: "Estar submetido a controles rígidos de horário, regras burocráticas excessivas e constante supervisão direta." },
+          { key: "D", code: "SE", text: "Enfrentar instabilidade financeira, risco iminente de desligamento ou constantes reestruturações organizacionais." },
+          { key: "E", code: "EC", text: "Perceber a impossibilidade de criar iniciativas próprias ou fundar projetos que carreguem sua marca autoral." },
+          { key: "F", code: "SV", text: "Constatar que as atividades diárias não geram impacto positivo para a sociedade ou para outras pessoas." },
+          { key: "G", code: "CH", text: "Ser alocado em funções rotineiras, fáceis e previsíveis, destituídas de competição ou desafios complexos." },
+          { key: "H", code: "LS", text: "Ter de sacrificar de forma recorrente o convívio com a família, a saúde e os momentos de lazer em função do trabalho." }
+        ]
+      },
+      {
+        id: 7,
+        module: 2,
+        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
+        text: "7. Qual afirmação reflete com maior exatidão o conceito pessoal de sucesso profissional?",
+        options: [
+          { key: "A", code: "TF", text: "\"Alcançar a excelência técnica e ser reconhecido pelos pares como uma autoridade na minha especialidade.\"" },
+          { key: "B", code: "GG", text: "\"Dirigir uma organização ou unidade de negócio, assumindo a responsabilidade pelos resultados globais.\"" },
+          { key: "C", code: "AU", text: "\"Definir minhas próprias regras de trabalho, mantendo independência de diretrizes institucionais rígidas.\"" },
+          { key: "D", code: "SE", text: "\"Manter uma carreira segura, estável e previsível, que ofereça tranquilidade de longo prazo.\"" },
+          { key: "E", code: "EC", text: "\"Construir uma empresa, escritório, clínica ou projeto de sucesso a partir de uma ideia própria.\"" },
+          { key: "F", code: "SV", text: "\"Saber que o meu trabalho diário contribui diretamente para a transformação positiva do mundo e das pessoas.\"" },
+          { key: "G", code: "CH", text: "\"Superar obstáculos difíceis, solucionar crises graves e vencer desafios aparentemente intransponíveis.\"" },
+          { key: "H", code: "LS", text: "\"Integrar as demandas de trabalho de forma harmoniosa com os compromissos pessoais e familiares.\"" }
+        ]
+      },
+      {
+        id: 8,
+        module: 2,
+        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
+        text: "8. Diante da necessidade de declinar uma proposta de promoção ou transferência, o principal motivo seria:",
+        options: [
+          { key: "A", code: "TF", text: "O afastamento definitivo da atuação técnica especializada em troca de funções de gestão burocrática." },
+          { key: "B", code: "GG", text: "A falta de perspectiva de alcançar posições estratégicas de liderança geral na nova estrutura." },
+          { key: "C", code: "AU", text: "A exigência de presença física rígida e a perda da liberdade de gestão do próprio tempo e método." },
+          { key: "D", code: "SE", text: "A transição para um modelo contratual de alto risco financeiro e sem garantias de estabilidade." },
+          { key: "E", code: "EC", text: "A impossibilidade de manter a autoria ou o controle sobre a criação de novos projetos e empreendimentos." },
+          { key: "F", code: "SV", text: "O desalinhamento das novas atribuições com os princípios éticos e valores morais pessoais." },
+          { key: "G", code: "CH", text: "A baixa exigência intelectual ou operacional do novo cargo, caracterizado por tarefas simples." },
+          { key: "H", code: "LS", text: "O aumento significativo da jornada de trabalho e viagens que comprometam a qualidade de vida pessoal." }
+        ]
+      },
+      {
+        id: 9,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "9. Durante reuniões estratégicas voltadas à deliberação de soluções sob forte pressão de prazos, a atitude natural envolve:",
+        options: [
+          { key: "A", code: "D", text: "Assumir a condução do debate, defender posições de forma assertiva e focar na decisão rápida." },
+          { key: "B", code: "I", text: "Estimular a participação dos presentes, propor soluções entusiásticas e utilizar a persuasão verbal." },
+          { key: "C", code: "S", text: "Ouvir atentamente as ponderações, buscar o consenso entre as partes e zelar pela harmonia do grupo." },
+          { key: "D", code: "C", text: "Solicitar evidências concretas, analisar detalhadamente os riscos envolvidos e exigir o cumprimento de critérios." }
+        ]
+      },
+      {
+        id: 10,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "10. Como se caracteriza o comportamento diante da necessidade de alterar bruscamente processos consolidados de trabalho?",
+        options: [
+          { key: "A", code: "D", text: "Reage-se com velocidade, encarando a mudança como uma oportunidade para acelerar resultados e eliminar ineficiências." },
+          { key: "B", code: "I", text: "Engaja-se na divulgação da mudança, promovendo a visão positiva do novo cenário entre os pares." },
+          { key: "C", code: "S", text: "Prefere-se a manutenção do método habitual, demonstrando cautela diante de alterações sem planejamento prévio longo." },
+          { key: "D", code: "C", text: "Avalia-se metodicamente o novo fluxo para garantir que a precisão técnica e a conformidade não sejam comprometidas." }
+        ]
+      },
+      {
+        id: 11,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "11. Qual condição no ambiente de trabalho atua como o principal fator causador de estresse e queda de produtividade?",
+        options: [
+          { key: "A", code: "D", text: "A lentidão na tomada de decisões, a falta de autonomia e a convivência com ineficiências operacionais." },
+          { key: "B", code: "I", text: "O isolamento social, ambientes de trabalho distantes e a ausência de reconhecimento ou interação pública." },
+          { key: "C", code: "S", text: "A ocorrência de mudanças repentinas, instabilidade de diretrizes, conflitos abertos e ritmo de trabalho caótico." },
+          { key: "D", code: "C", text: "A desorganização, o descumprimento de prazos combinados, a falta de dados e a necessidade de improvisação." }
+        ]
+      },
+      {
+        id: 12,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "12. A comunicação profissional com pares e superiores hierárquicos é estruturada predominantemente de forma:",
+        options: [
+          { key: "A", code: "D", text: "Direta, sucinta, focada em objetivos de curto prazo e orientada a resultados." },
+          { key: "B", code: "I", text: "Persuasiva, expressiva, calorosa, focada em relacionamentos e engajamento verbal." },
+          { key: "C", code: "S", text: "Moderada, ponderada, empática, priorizando a escuta atenta e a manutenção do clima positivo." },
+          { key: "D", code: "C", text: "Formal, analítica, detalhada, fundamentada em fatos, documentos e critérios técnicos." }
+        ]
+      },
+      {
+        id: 13,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "13. Diante de um feedback crítico referente a uma entrega ou desempenho recente, a reação imediata é:",
+        options: [
+          { key: "A", code: "D", text: "Tratar a crítica como um desafio direto a ser superado rapidamente no ciclo de entregas seguinte." },
+          { key: "B", code: "I", text: "Procurar o emissor para dialogar abertamente, visando manter o alinhamento pessoal e o bom relacionamento." },
+          { key: "C", code: "S", text: "Absorver a informação de forma reservada, buscando ajustar o comportamento de modo gradual e harmonioso." },
+          { key: "D", code: "C", text: "Analisar a fundamentação lógica da crítica com base em regras prévias, dados empíricos e parâmetros acordados." }
+        ]
+      },
+      {
+        id: 14,
+        module: 3,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "14. Qual elemento proporciona a maior sensação de realização no cotidiano profissional?",
+        options: [
+          { key: "A", code: "D", text: "Deter o controle de decisões, exercer autonomia e atingir metas desafiadoras." },
+          { key: "B", code: "I", text: "Obter visibilidade, receber reconhecimento do grupo e influenciar positivamente as pessoas." },
+          { key: "C", code: "S", text: "Integrar uma equipe coesa, atuar em um ambiente estável e colaborar de forma previsível." },
+          { key: "D", code: "C", text: "Garantir o cumprimento de padrões rigorosos de qualidade, mantendo a precisão e a conformidade." }
+        ]
+      }
+    ];
+
+    const RIASEC_META = {
+      R: {
+        letter: "R",
+        name: "Realista",
+        desc: "Atividades práticas, operação de equipamentos, procedimentos tangíveis e atuação direta em campo, clínica ou infraestrutura.",
+        careers: "Engenharia Civil ou Mecânica, Gastronomia, Agronomia, Fisioterapia Motora, Logística Operacional e Infraestrutura."
+      },
+      I: {
+        letter: "I",
+        name: "Investigativo",
+        desc: "Análise lógica, pesquisa científica, investigação diagnóstica e resolução de incógnitas teóricas ou complexas.",
+        careers: "Medicina Diagnóstica, Pesquisa Científica, Direito Investigativo ou Tributário, Economia, Perícia e Ciência de Dados."
+      },
+      A: {
+        letter: "A",
+        name: "Artístico",
+        desc: "Criação estética, expressão aberta, inovação conceitual, design e ambientes flexíveis sem regras rígidas.",
+        careers: "Arquitetura e Urbanismo, Publicidade e Comunicação, Artes Visuais ou Cênicas, Editorial, Moda e Design."
+      },
+      S: {
+        letter: "S",
+        name: "Social",
+        desc: "Suporte humano, ensino, cuidado clínico, desenvolvimento de pessoas, mediação e impacto interpessoal.",
+        careers: "Medicina Clínica ou Enfermagem, Psicologia, Pedagogia e Educação, Direito Trabalhista ou Mediação e Recursos Humanos."
+      },
+      E: {
+        letter: "E",
+        name: "Empreendedor",
+        desc: "Liderança, persuasão comercial, negociação estratégica, expansão de negócios e alcance de metas.",
+        careers: "Direção Comercial, Direito Empresarial, Gestão Hospitalar ou Escolar, Relações Públicas, Agronegócio e Empreendedorismo."
+      },
+      C: {
+        letter: "C",
+        name: "Convencional",
+        desc: "Organização de processos, auditoria de dados, governança normativa, controle de qualidade e rotinas estruturadas.",
+        careers: "Contabilidade e Controladoria, Direito Regulatório, Gestão Pública, Auditoria Financeira, Qualidade e Compliance."
+      }
+    };
+
+    const SCHEIN_META = {
+      TF: {
+        code: "TF",
+        name: "Competência Técnico-Funcional",
+        value: "Domínio profundo de uma especialidade técnica, científica ou funcional.",
+        filter: "Recuse promoções puramente administrativas que o afastem da prática especializada; busque trilhas de carreira em Y (Especialista Sênior / Referência Técnica).",
+        discMatch: "C",
+        riasecSuggest: "I - C - R",
+        ecosystem: "Hospitais de Alta Complexidade, Escritórios de Advocacia Especializados, Centros de Pesquisa, Engenharia e Tecnologia.",
+        roles: "Médico Cirurgião, Advogado Parecerista, Engenheiro Projetista, Cientista Pesquisador, Especialista em TI."
+      },
+      GG: {
+        code: "GG",
+        name: "Competência Gerencial Geral",
+        value: "Alcance de cargos executivos, comando multidisciplinar e responsabilidade por resultados globais.",
+        filter: "Priorize posições com visão sistêmica da organização, gestão de orçamento/resultados e ascensão para diretoria, evitando silos isolados.",
+        discMatch: "D",
+        riasecSuggest: "E - S - C",
+        ecosystem: "Grandes Corporações, Redes Hospitalares, Indústrias, Instituições Financeiras e Grupos Educacionais.",
+        roles: "Diretor Executivo (CEO), Superintendente Hospitalar, Diretor Industrial, Gerente Geral de Unidade."
+      },
+      AU: {
+        code: "AU",
+        name: "Autonomia e Independência",
+        value: "Liberdade operacional, flexibilidade de métodos e gestão autônoma do próprio tempo.",
+        filter: "Evite culturas de microgerenciamento e horários rígidos; negocie modelos híbridos/remotos, atuação liberal ou metas por entrega.",
+        discMatch: "I",
+        riasecSuggest: "A - E - I",
+        ecosystem: "Consultórios Próprios, Escritórios Autônomos, Agências Criativas, Consultoria Independente e Ecossistemas Flexíveis.",
+        roles: "Profissional Liberal (Médico, Advogado ou Psicólogo), Consultor Independente, Arquiteto Autônomo, Designer."
+      },
+      SE: {
+        code: "SE",
+        name: "Segurança e Estabilidade",
+        value: "Previsibilidade contratual, estabilidade financeira e solidez institucional de longo prazo.",
+        filter: "Avalie a solidez financeira da instituição, planos de carreira estruturados e previsibilidade de longo prazo antes de assumir riscos.",
+        discMatch: "S",
+        riasecSuggest: "C - R - S",
+        ecosystem: "Serviço Público e Magistratura, Instituições Financeiras Consolidadas, Concessionárias e Setores Regulados.",
+        roles: "Servidor Público de Carreira, Auditor Fiscal, Analista Jurídico Concursado, Gestor de Contratos e Compliance."
+      },
+      EC: {
+        code: "EC",
+        name: "Criatividade Empreendedora",
+        value: "Criação e fundação de novos negócios, instituições, produtos ou soluções com marca autoral.",
+        filter: "Busque espaços de intraempreendedorismo com participação nos resultados ou a fundação de empreendimentos e escritórios próprios.",
+        discMatch: "D",
+        riasecSuggest: "E - A - R",
+        ecosystem: "Negócios Próprios, Clínicas ou Escolas Autorais, Indústrias Criativas, Agronegócio Inovador e Startups.",
+        roles: "Fundador de Empresa Própria, Sócio-Fundador de Clínica ou Escritório, Produtor Cultural, Empreendedor."
+      },
+      SV: {
+        code: "SV",
+        name: "Serviço e Dedicação a uma Causa",
+        value: "Realização de trabalho orientado a propósitos sociais, humanos, éticos ou transformação comunitária.",
+        filter: "Valide se a missão real da instituição gera impacto humano ou social tangível; você não prospera em ambientes puramente mercantilistas.",
+        discMatch: "S",
+        riasecSuggest: "S - A - I",
+        ecosystem: "Hospitais Públicos e Filantrópicos, Instituições de Ensino, ONGs, Defensoria Pública e Projetos Socioambientais (ESG).",
+        roles: "Educador e Professor, Médico de Saúde Comunitária, Psicólogo Social, Gestor de Projetos Socioambientais."
+      },
+      CH: {
+        code: "CH",
+        name: "Desafio Puro",
+        value: "Superação de problemas considerados insolúveis, crises complexas e cenários de alta exigência.",
+        filter: "Fuja de rotinas previsíveis; busque áreas de urgência, contencioso estratégico, reestruturação de operações ou metas de alta complexidade.",
+        discMatch: "D",
+        riasecSuggest: "E - I - R",
+        ecosystem: "Pronto-Atendimento e Cirurgia de Emergência, Contencioso Estratégico, Consultorias de Reestruturação e Mercado Financeiro.",
+        roles: "Advogado de Contencioso Crítico, Médico Emergencista, Gestor de Crises e Turnaround, Negociador."
+      },
+      LS: {
+        code: "LS",
+        name: "Estilo de Vida",
+        value: "Harmonia e integração equilibrada entre demandas profissionais, família, saúde e vida pessoal.",
+        filter: "Rejeite promoções que exijam viagens constantes ou jornadas exaustivas; priorize flexibilidade e respeito aos limites pessoais.",
+        discMatch: "S",
+        riasecSuggest: "S - C - A",
+        ecosystem: "Organizações com Jornada Flexível, Consultoria Sob Demanda, Ensino Híbrido e Ambientes Orientados ao Bem-Estar.",
+        roles: "Professor Universitário, Consultor de Projetos Flexíveis, Especialista em Regime Remoto ou Híbrido, Terapeuta."
+      }
+    };
+
+    const DISC_META = {
+      D: {
+        code: "D",
+        name: "Dominância",
+        style: "Assertivo, focado em metas, orientado a resultados rápidos e direto na comunicação.",
+        stress: "Lentidão decisória, falta de autonomia e ineficiência operacional.",
+        blindSpot: "Praticar escuta ativa, empatia e paciência com o ritmo da equipe (desenvolvendo fatores da Estabilidade)."
+      },
+      I: {
+        code: "I",
+        name: "Influência",
+        style: "Persuasivo, comunicativo, otimista, entusiástico e focado em relacionamentos.",
+        stress: "Isolamento social, ambientes distantes e ausência de reconhecimento público.",
+        blindSpot: "Incorporar métodos rigorosos de checagem, documentação e controle de prazos (fatores da Conformidade)."
+      },
+      S: {
+        code: "S",
+        name: "Estabilidade",
+        style: "Colaborativo, paciente, previsível, bom ouvinte e promotor da harmonia do grupo.",
+        stress: "Mudanças repentinas sem planejamento, instabilidade de diretrizes e conflitos abertos.",
+        blindSpot: "Desenvolver posicionamento assertivo em negociações e agilidade diante de mudanças bruscas (fatores da Dominância)."
+      },
+      C: {
+        code: "C",
+        name: "Conformidade",
+        style: "Analítico, preciso, rigoroso com normas, detalhista e orientado por dados e qualidade.",
+        stress: "Desorganização, improviso, falta de evidências concretas e descumprimento de padrões.",
+        blindSpot: "Evitar a paralisia por análise excessiva e cultivar flexibilidade interpessoal (fatores da Influência)."
+      }
+    };
+
+    let state = {
+      currentView: "interview",
+      currentQuestionIndex: 0,
+      answers: {},
+      matrixFilter: "ALL"
+    };
+
+    let charts = {
+      riasec: null,
+      schein: null,
+      disc: null
+    };
+
+    function wrapLabel(text, maxChars) {
+      if (!text || text.length <= maxChars) return text;
+      const words = text.split(" ");
+      const lines = [];
+      let currentLine = "";
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        if ((currentLine + " " + word).trim().length <= maxChars) {
+          currentLine = (currentLine + " " + word).trim();
+        } else {
+          if (currentLine) lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      if (currentLine) lines.push(currentLine);
+      return lines;
+    }
+
+    function switchView(viewName) {
+      state.currentView = viewName;
+      document.getElementById("view-interview").classList.add("hidden");
+      document.getElementById("view-results").classList.add("hidden");
+      document.getElementById("view-methodology").classList.add("hidden");
+
+      const navButtons = {
+        interview: document.getElementById("nav-interview"),
+        results: document.getElementById("nav-results"),
+        methodology: document.getElementById("nav-methodology")
+      };
+
+      Object.keys(navButtons).forEach(key => {
+        const btn = navButtons[key];
+        if (key === viewName) {
+          btn.classList.remove("bg-[#F2EFE9]", "text-[#4A504D]", "hover:bg-[#E6E2D8]");
+          btn.classList.add("bg-[#1E4D5C]", "text-white");
+        } else {
+          btn.classList.remove("bg-[#1E4D5C]", "text-white");
+          btn.classList.add("bg-[#F2EFE9]", "text-[#4A504D]", "hover:bg-[#E6E2D8]");
+        }
+      });
+
+      const targetSection = document.getElementById("view-" + viewName);
+      targetSection.classList.remove("hidden");
+
+      if (viewName === "results") {
+        renderDiagnosticDashboard();
+      } else if (viewName === "methodology") {
+        renderMatrixCards();
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateProgressUI() {
+      const total = QUESTIONS.length;
+      const answeredIds = Object.keys(state.answers).map(Number);
+      const answeredCount = answeredIds.length;
+      const percent = Math.round((answeredCount / total) * 100);
+
+      document.getElementById("results-badge").textContent = answeredCount + "/14";
+      if (answeredCount === total) {
+        document.getElementById("results-badge").className = "text-xs px-1.5 py-0.5 rounded bg-[#4A7C6F] text-white font-bold";
+      } else {
+        document.getElementById("results-badge").className = "text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]";
+      }
+
+      const mod1Count = [1, 2, 3, 4].filter(id => state.answers[id]).length;
+      const mod2Count = [5, 6, 7, 8].filter(id => state.answers[id]).length;
+      const mod3Count = [9, 10, 11, 12, 13, 14].filter(id => state.answers[id]).length;
+
+      document.getElementById("mod-count-1").textContent = mod1Count + "/4";
+      document.getElementById("mod-count-2").textContent = mod2Count + "/4";
+      document.getElementById("mod-count-3").textContent = mod3Count + "/6";
+
+      const currentQ = QUESTIONS[state.currentQuestionIndex];
+      [1, 2, 3].forEach(m => {
+        const card = document.getElementById("mod-card-" + m);
+        if (currentQ.module === m) {
+          card.className = "p-3.5 rounded-xl border border-[#1E4D5C] bg-[#F2F6F7] transition-all";
+        } else {
+          card.className = "p-3.5 rounded-xl border border-[#E6E2D8] bg-[#FAF8F5] transition-all";
+        }
+      });
+
+      document.getElementById("progress-label").textContent = "Questão " + (state.currentQuestionIndex + 1) + " de " + total;
+      document.getElementById("progress-percent").textContent = percent + "% concluído";
+      document.getElementById("progress-bar").style.width = percent + "%";
+
+      const dotsContainer = document.getElementById("question-dots");
+      dotsContainer.innerHTML = "";
+      QUESTIONS.forEach((q, idx) => {
+        const isAnswered = Boolean(state.answers[q.id]);
+        const isCurrent = idx === state.currentQuestionIndex;
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.textContent = q.id;
+        dot.onclick = () => {
+          state.currentQuestionIndex = idx;
+          renderQuestion();
+        };
+        let classes = "w-7 h-7 rounded-lg text-xs font-semibold transition-all border ";
+        if (isCurrent) {
+          classes += "border-[#1E4D5C] bg-[#1E4D5C] text-white scale-105";
+        } else if (isAnswered) {
+          classes += "border-[#4A7C6F] bg-[#E8F2EF] text-[#2C5449]";
+        } else {
+          classes += "border-[#D5CFC2] bg-white text-[#757C78] hover:border-[#1E4D5C]";
+        }
+        dot.className = classes;
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[state.currentQuestionIndex];
+      document.getElementById("q-module-badge").textContent = q.moduleTitle;
+      document.getElementById("q-text").textContent = q.text;
+
+      const optionsContainer = document.getElementById("q-options");
+      optionsContainer.innerHTML = "";
+
+      const selectedKey = state.answers[q.id];
+
+      q.options.forEach(opt => {
+        const isSelected = selectedKey === opt.key;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.onclick = () => selectOption(q.id, opt.key);
+        btn.className = "option-card w-full text-left p-3.5 sm:p-4 rounded-xl border bg-white flex items-start gap-3.5 " +
+          (isSelected ? "selected border-[#1E4D5C]" : "border-[#DCD6C8]");
+
+        const badge = document.createElement("span");
+        badge.className = "w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 transition-colors " +
+          (isSelected ? "bg-[#1E4D5C] text-white" : "bg-[#F2EFE9] text-[#4A504D]");
+        badge.textContent = opt.key;
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "text-sm sm:text-base text-[#262A28] leading-snug";
+        textSpan.textContent = opt.text;
+
+        btn.appendChild(badge);
+        btn.appendChild(textSpan);
+        optionsContainer.appendChild(btn);
+      });
+
+      document.getElementById("btn-prev").disabled = state.currentQuestionIndex === 0;
+
+      const isLast = state.currentQuestionIndex === QUESTIONS.length - 1;
+      const allAnswered = Object.keys(state.answers).length === QUESTIONS.length;
+
+      const btnNext = document.getElementById("btn-next");
+      const btnFinish = document.getElementById("btn-finish");
+
+      if (isLast || allAnswered) {
+        btnFinish.classList.remove("hidden");
+      } else {
+        btnFinish.classList.add("hidden");
+      }
+
+      if (isLast) {
+        btnNext.classList.add("hidden");
+      } else {
+        btnNext.classList.remove("hidden");
+      }
+
+      updateProgressUI();
+    }
+
+    function selectOption(questionId, optionKey) {
+      state.answers[questionId] = optionKey;
+      renderQuestion();
+
+      const autoAdvance = document.getElementById("auto-advance-toggle").checked;
+      if (autoAdvance && state.currentQuestionIndex < QUESTIONS.length - 1) {
+        setTimeout(() => {
+          if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+            state.currentQuestionIndex++;
+            renderQuestion();
+          }
+        }, 280);
+      } else if (autoAdvance && Object.keys(state.answers).length === QUESTIONS.length) {
+        setTimeout(() => {
+          switchView("results");
+        }, 420);
+      }
+    }
+
+    function prevQuestion() {
+      if (state.currentQuestionIndex > 0) {
+        state.currentQuestionIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+        state.currentQuestionIndex++;
+        renderQuestion();
+      }
+    }
+
+    function finishInterview() {
+      switchView("results");
+    }
+
+    function resetQuiz() {
+      state.answers = {};
+      state.currentQuestionIndex = 0;
+      renderQuestion();
+    }
+
+    function fillDemoProfile() {
+      state.answers = {
+        1: "B",
+        2: "B",
+        3: "C",
+        4: "B",
+        5: "C",
+        6: "C",
+        7: "A",
+        8: "C",
+        9: "D",
+        10: "D",
+        11: "D",
+        12: "D",
+        13: "D",
+        14: "D"
+      };
+      state.currentQuestionIndex = QUESTIONS.length - 1;
+      updateProgressUI();
+      switchView("results");
+    }
+
+    function computeScores() {
+      const riasec = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+      const schein = { TF: 0, GG: 0, AU: 0, SE: 0, EC: 0, SV: 0, CH: 0, LS: 0 };
+      const disc = { D: 0, I: 0, S: 0, C: 0 };
+
+      QUESTIONS.forEach(q => {
+        const chosenKey = state.answers[q.id];
+        if (!chosenKey) return;
+        const opt = q.options.find(o => o.key === chosenKey);
+        if (!opt) return;
+        if (q.module === 1) riasec[opt.code]++;
+        if (q.module === 2) schein[opt.code]++;
+        if (q.module === 3) disc[opt.code]++;
+      });
+
+      const riasecSorted = Object.keys(riasec)
+        .map(k => ({ code: k, score: riasec[k], meta: RIASEC_META[k] }))
+        .sort((a, b) => b.score - a.score);
+
+      const scheinSorted = Object.keys(schein)
+        .map(k => ({ code: k, score: schein[k], meta: SCHEIN_META[k] }))
+        .sort((a, b) => b.score - a.score);
+
+      const discSorted = Object.keys(disc)
+        .map(k => ({ code: k, score: disc[k], meta: DISC_META[k] }))
+        .sort((a, b) => b.score - a.score);
+
+      return {
+        answeredCount: Object.keys(state.answers).length,
+        riasec,
+        schein,
+        disc,
+        riasecSorted,
+        scheinSorted,
+        discSorted
+      };
+    }
+
+    function renderDiagnosticDashboard() {
+      const data = computeScores();
+      const alertBox = document.getElementById("incomplete-alert");
+      if (data.answeredCount < QUESTIONS.length) {
+        alertBox.classList.remove("hidden");
+        document.getElementById("alert-answered-count").textContent = data.answeredCount;
+      } else {
+        alertBox.classList.add("hidden");
+      }
+
+      const top3Riasec = data.riasecSorted.slice(0, 3);
+      const hollandCode = data.answeredCount > 0
+        ? top3Riasec.map(item => item.code).join(" - ")
+        : "I - A - S";
+      const primaryRiasec = data.answeredCount > 0 ? top3Riasec[0].meta : RIASEC_META.I;
+
+      const primarySchein = data.answeredCount > 0 ? data.scheinSorted[0].meta : SCHEIN_META.TF;
+      const secondarySchein = data.answeredCount > 0 && data.scheinSorted[1].score > 0 ? data.scheinSorted[1].meta : null;
+
+      const primaryDisc = data.answeredCount > 0 ? data.discSorted[0].meta : DISC_META.C;
+      const secondaryDisc = data.answeredCount > 0 && data.discSorted[1].score > 0 ? data.discSorted[1].meta : DISC_META.S;
+
+      document.getElementById("kpi-riasec-code").textContent = hollandCode;
+      document.getElementById("kpi-riasec-name").textContent =
+        "Primário: " + primaryRiasec.name + " (" + top3Riasec[1].meta.name + " / " + top3Riasec[2].meta.name + ")";
+      document.getElementById("kpi-riasec-desc").textContent = primaryRiasec.desc;
+
+      document.getElementById("kpi-schein-code").textContent = primarySchein.name;
+      document.getElementById("kpi-schein-sub").textContent = secondarySchein
+        ? "Secundária: " + secondarySchein.name
+        : "Âncora de Carreira Dominante";
+      document.getElementById("kpi-schein-desc").textContent = primarySchein.value;
+
+      document.getElementById("kpi-disc-code").textContent = primaryDisc.code + " / " + secondaryDisc.code;
+      document.getElementById("kpi-disc-name").textContent =
+        primaryDisc.name + " com suporte em " + secondaryDisc.name;
+      document.getElementById("kpi-disc-desc").textContent = primaryDisc.style;
+
+      const narrativeEl = document.getElementById("consultant-narrative");
+      narrativeEl.innerHTML =
+        "<p><strong>1. Conteúdo que energiza sua rotina (Código Holland " + hollandCode + "):</strong> " +
+        "Seu vetor vocacional primário é <strong>" + primaryRiasec.name + "</strong>, apoiado pelos vetores <strong>" + top3Riasec[1].meta.name + "</strong> e <strong>" + top3Riasec[2].meta.name + "</strong>. " +
+        "Na prática, você atinge maior estado de fluxo em áreas ligadas a " + primaryRiasec.careers.toLowerCase() + "</p>" +
+        "<p><strong>2. Seu critério inegociável de decisão (Âncora " + primarySchein.name + "):</strong> " +
+        "De acordo com o modelo de Edgar Schein, o pilar que sustenta sua satisfação profissional é <em>" + primarySchein.value.toLowerCase() + "</em> " +
+        "Propostas que violem esse valor gerarão desgaste rápido, mesmo com ganhos financeiros imediatos.</p>" +
+        "<p><strong>3. Sua dinâmica comportamental observável (DISC " + primaryDisc.name + " + " + secondaryDisc.name + "):</strong> " +
+        "Você opera predominantemente de modo <em>" + primaryDisc.style.toLowerCase() + "</em> " +
+        "Seu principal gatilho de estresse ocupacional ocorre diante de: " + primaryDisc.stress.toLowerCase() + "</p>";
+
+      document.getElementById("riasec-breakdown").innerHTML = top3Riasec.map((item, idx) =>
+        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#1E4D5C]'>" + item.score + " pt(s)</span></div>"
+      ).join("");
+
+      document.getElementById("schein-breakdown").innerHTML = data.scheinSorted.slice(0, 3).map((item, idx) =>
+        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + "</strong></span><span class='font-semibold text-[#4B5B82]'>" + item.score + " pt(s)</span></div>"
+      ).join("");
+
+      document.getElementById("disc-breakdown").innerHTML = data.discSorted.map((item, idx) =>
+        "<div class='flex items-center justify-between'><span><strong>" + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#9A6E27]'>" + item.score + " / 6</span></div>"
+      ).join("");
+
+      const ecosystemEl = document.getElementById("ecosystem-card");
+      ecosystemEl.innerHTML =
+        "<div class='flex flex-wrap items-center gap-2'>" +
+          "<span class='text-xs font-bold px-2.5 py-1 rounded-md bg-[#1E4D5C] text-white'>Código Sugerido: " + primarySchein.riasecSuggest + "</span>" +
+          "<span class='text-xs font-bold px-2.5 py-1 rounded-md bg-white border border-[#CFE0DC] text-[#1E4D5C]'>Sinergia DISC Ideal: " + DISC_META[primarySchein.discMatch].name + " (" + primarySchein.discMatch + ")</span>" +
+        "</div>" +
+        "<div><p class='text-xs font-bold uppercase tracking-wider text-[#3B665B]'>Ecossistema Organizacional Recomendado</p>" +
+        "<p class='text-sm font-semibold text-[#262A28] mt-0.5'>" + primarySchein.ecosystem + "</p></div>" +
+        "<div><p class='text-xs font-bold uppercase tracking-wider text-[#3B665B]'>Exemplos de Carreiras e Atribuições</p>" +
+        "<p class='text-sm text-[#3C423F] mt-0.5'>" + primarySchein.roles + "</p></div>";
+
+      const tensionEl = document.getElementById("tension-alert-card");
+      const hasFriction =
+        (primarySchein.code === "SE" && primaryDisc.code === "D") ||
+        (primarySchein.code === "AU" && primaryDisc.code === "C") ||
+        (primarySchein.code === "TF" && primaryDisc.code === "I") ||
+        (primarySchein.code === "LS" && primaryDisc.code === "D");
+
+      if (hasFriction) {
+        tensionEl.innerHTML =
+          "<p class='text-xs font-bold uppercase tracking-wider text-[#C86D51]'>⚠️ Alerta de Tensão Interna Detectado</p>" +
+          "<p class='text-xs sm:text-sm text-[#3C423F] leading-relaxed'>Sua âncora <strong>" + primarySchein.name + "</strong> combinada ao estilo comportamental <strong>" + primaryDisc.name + "</strong> exige atenção: cargos que exploram apenas sua energia " + primaryDisc.name + " podem colidir com sua necessidade profunda de " + primarySchein.name.toLowerCase() + ". Negocie o escopo da função com clareza.</p>";
+      } else {
+        tensionEl.innerHTML =
+          "<p class='text-xs font-bold uppercase tracking-wider text-[#4A7C6F]'>✓ Alta Congruência Motivacional-Comportamental</p>" +
+          "<p class='text-xs sm:text-sm text-[#3C423F] leading-relaxed'>Seu estilo comportamental <strong>" + primaryDisc.name + "</strong> atua como alavanca natural para realizar os valores da sua âncora <strong>" + primarySchein.name + "</strong>, reduzindo o risco de atrito com a cultura organizacional.</p>";
+      }
+
+      const actionList = document.getElementById("action-plan-list");
+      actionList.innerHTML =
+        "<div class='p-3.5 rounded-xl bg-[#FAF8F5] border border-[#E6E2D8]'>" +
+          "<p class='text-xs font-bold text-[#1E4D5C]'>1. Triagem de Áreas e Aprendizado (Vetor RIASEC)</p>" +
+          "<p class='text-xs text-[#4A504D] mt-1 leading-relaxed'>Direcione especializações e projetos para o eixo <strong>" + hollandCode + "</strong>, combinando " + primaryRiasec.name.toLowerCase() + " com " + top3Riasec[1].meta.name.toLowerCase() + ".</p>" +
+        "</div>" +
+        "<div class='p-3.5 rounded-xl bg-[#FAF8F5] border border-[#E6E2D8]'>" +
+          "<p class='text-xs font-bold text-[#4B5B82]'>2. Filtro Decisório de Propostas (Âncora de Schein)</p>" +
+          "<p class='text-xs text-[#4A504D] mt-1 leading-relaxed'>" + primarySchein.filter + "</p>" +
+        "</div>" +
+        "<div class='p-3.5 rounded-xl bg-[#FAF8F5] border border-[#E6E2D8]'>" +
+          "<p class='text-xs font-bold text-[#9A6E27]'>3. Plasticidade Comportamental (Ponto Cego DISC)</p>" +
+          "<p class='text-xs text-[#4A504D] mt-1 leading-relaxed'>" + primaryDisc.blindSpot + "</p>" +
+        "</div>" +
+        "<div class='p-3.5 rounded-xl bg-[#FAF8F5] border border-[#E6E2D8]'>" +
+          "<p class='text-xs font-bold text-[#3C423F]'>4. Ciclo de Recalibração Periódica</p>" +
+          "<p class='text-xs text-[#4A504D] mt-1 leading-relaxed'>Reaplique esta matriz a cada 3 a 5 anos ou após marcos de transição para manter o alinhamento frente às mudanças da sua trajetória.</p>" +
+        "</div>";
+
+      renderCharts(data);
+    }
+
+    function renderCharts(data) {
+      const riasecLabels = ["Realista (R)", "Investigativo (I)", "Artístico (A)", "Social (S)", "Empreendedor (E)", "Convencional (C)"];
+      const riasecValues = ["R", "I", "A", "S", "E", "C"].map(k => data.riasec[k]);
+
+      if (charts.riasec) charts.riasec.destroy();
+      const ctxR = document.getElementById("chart-riasec").getContext("2d");
+      charts.riasec = new Chart(ctxR, {
+        type: "radar",
+        data: {
+          labels: riasecLabels.map(l => wrapLabel(l, 16)),
+          datasets: [{
+            label: "Pontuação RIASEC",
+            data: riasecValues,
+            backgroundColor: "rgba(30, 77, 92, 0.18)",
+            borderColor: "#1E4D5C",
+            borderWidth: 2,
+            pointBackgroundColor: "#C86D51",
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 4,
+              ticks: { stepSize: 1, font: { size: 10 }, backdropColor: "transparent" },
+              pointLabels: { font: { size: 11, weight: "600" }, color: "#262A28" },
+              grid: { color: "#E6E2D8" },
+              angleLines: { color: "#E6E2D8" }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                label: function(ctx) {
+                  return "Frequência: " + ctx.raw + " de 4 questões";
+                }
+              }
+            }
+          }
+        }
+      });
+
+      const scheinOrder = ["TF", "GG", "AU", "SE", "EC", "SV", "CH", "LS"];
+      const scheinLabels = scheinOrder.map(k => wrapLabel(SCHEIN_META[k].name, 16));
+      const scheinValues = scheinOrder.map(k => data.schein[k]);
+
+      if (charts.schein) charts.schein.destroy();
+      const ctxS = document.getElementById("chart-schein").getContext("2d");
+      charts.schein = new Chart(ctxS, {
+        type: "bar",
+        data: {
+          labels: scheinLabels,
+          datasets: [{
+            label: "Intensidade da Âncora",
+            data: scheinValues,
+            backgroundColor: scheinValues.map(v => v > 0 ? "#4B5B82" : "#E6E2D8"),
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 4,
+              ticks: { stepSize: 1, font: { size: 10 } },
+              grid: { color: "#F2EFE9" }
+            },
+            y: {
+              ticks: { font: { size: 10, weight: "600" }, color: "#262A28" },
+              grid: { display: false }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) {
+                  const idx = items[0].dataIndex;
+                  return SCHEIN_META[scheinOrder[idx]].name;
+                },
+                label: function(ctx) {
+                  return "Escolhas: " + ctx.raw + " de 4 questões";
+                }
+              }
+            }
+          }
+        }
+      });
+
+      const discOrder = ["D", "I", "S", "C"];
+      const discLabels = ["Dominância (D)", "Influência (I)", "Estabilidade (S)", "Conformidade (C)"];
+      const discValues = discOrder.map(k => data.disc[k]);
+
+      if (charts.disc) charts.disc.destroy();
+      const ctxD = document.getElementById("chart-disc").getContext("2d");
+      charts.disc = new Chart(ctxD, {
+        type: "doughnut",
+        data: {
+          labels: discLabels,
+          datasets: [{
+            data: discValues.every(v => v === 0) ? [1, 1, 1, 1] : discValues,
+            backgroundColor: ["#C86D51", "#D4A04D", "#4A7C6F", "#1E4D5C"],
+            borderWidth: 2,
+            borderColor: "#FFFFFF"
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "62%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { boxWidth: 12, font: { size: 11 }, padding: 12 }
+            },
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                label: function(ctx) {
+                  const realVal = discValues[ctx.dataIndex];
+                  const pct = Math.round((realVal / 6) * 100);
+                  return ctx.label + ": " + realVal + " pts (" + pct + "%)";
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function filterMatrix(filterCode) {
+      state.matrixFilter = filterCode;
+      document.querySelectorAll(".matrix-filter-btn").forEach(btn => {
+        if (btn.getAttribute("data-filter") === filterCode) {
+          btn.className = "matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1E4D5C] text-white";
+        } else {
+          btn.className = "matrix-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]";
+        }
+      });
+      renderMatrixCards();
+    }
+
+    function renderMatrixCards() {
+      const grid = document.getElementById("matrix-cards-grid");
+      grid.innerHTML = "";
+
+      const keys = Object.keys(SCHEIN_META).filter(k => {
+        if (state.matrixFilter === "ALL") return true;
+        return SCHEIN_META[k].discMatch === state.matrixFilter;
+      });
+
+      keys.forEach(k => {
+        const item = SCHEIN_META[k];
+        const discObj = DISC_META[item.discMatch];
+        const card = document.createElement("div");
+        card.className = "p-5 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8] flex flex-col justify-between space-y-3";
+        card.innerHTML =
+          "<div>" +
+            "<div class='flex flex-wrap items-center justify-between gap-2 mb-2'>" +
+              "<span class='text-xs font-bold px-2.5 py-1 rounded-md bg-[#E6F0F2] text-[#1E4D5C]'>DISC: " + discObj.name + " (" + discObj.code + ")</span>" +
+              "<span class='text-xs font-bold px-2.5 py-1 rounded-md bg-white border border-[#DCD6C8] text-[#4A504D]'>RIASEC: " + item.riasecSuggest + "</span>" +
+            "</div>" +
+            "<h4 class='text-base font-bold text-[#262A28]'>" + item.name + "</h4>" +
+            "<p class='text-xs text-[#525855] mt-1 leading-relaxed'>" + item.value + "</p>" +
+          "</div>" +
+          "<div class='pt-3 border-t border-[#E6E2D8] space-y-1.5 text-xs'>" +
+            "<p class='text-[#262A28]'><strong>Ecossistema Ideal:</strong> " + item.ecosystem + "</p>" +
+            "<p class='text-[#4A504D]'><strong>Exemplos de Carreiras:</strong> " + item.roles + "</p>" +
+          "</div>";
+        grid.appendChild(card);
+      });
+    }
+
+    renderQuestion();
+    renderMatrixCards();
+  </script>
+</body>
+</html>
