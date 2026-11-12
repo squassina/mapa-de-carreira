@@ -57,8 +57,8 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-[#1E4D5C] selection:text-white">
   <!-- Chosen Palette: Warm Sand & Calm Slate Harmony -->
-  <!-- Application Structure Plan: Designed a three-view interactive Career Consultant SPA centered on low-friction user experience. View 1 (Entrevista Guiada) presents the 14 multiple-choice questions sequentially across three thematic modules (RIASEC, Schein Anchors, DISC) with auto-advance, module progress tracking, and a sample profile trigger so users can respond intuitively without overthinking. View 2 (Painel de Diagnóstico) dynamically synthesizes user choices into a personalized consultant briefing, three responsive Chart.js Canvas visualizations, cross-dimensional synergy/tension analysis, and an actionable career roadmap spanning diverse industries. View 3 (Base Metodológica) lets users explore the scientific integration of Holland, Schein, and Marston alongside an interactive multisector ecosystem matrix. -->
-  <!-- Visualization & Content Choices: 1. RIASEC Interests -> Compare 6 vocational vectors -> Radar Chart (Chart.js Canvas) -> Hover tooltips & dynamic ranking -> Shows vocational balance clearly. 2. Schein Career Anchors -> Rank 8 non-negotiable career values -> Horizontal Bar Chart (Chart.js Canvas) -> Interactive breakdown -> Best for comparing 8 multi-word labels cleanly. 3. DISC Behavioral Style -> Show proportional behavioral drivers -> Doughnut Chart (Chart.js Canvas) -> Interactive legend & tooltips -> Highlights primary/secondary behavioral style. 4. Cross-Analysis Matrix -> Organize ecosystem & role matches across multiple industries -> Interactive Filterable HTML/Tailwind Cards & Matrix -> Filter by Anchor or DISC -> Replaces static tables with explorable insights. -->
+  <!-- Application Structure Plan: Designed a three-view interactive Career Consultant SPA with dual psychometric depth modes: Standard Mode (24 balanced questions: 8 RIASEC, 8 Schein in 4-option balanced incomplete blocks, 8 DISC) and Extended Mode (42 deep-dive questions: 14 RIASEC, 14 Schein, 14 DISC). Eliminating 8-option questions removes reading overload while balanced combinatorial pairing guarantees equal statistical exposure across all dimensions. View 1 (Entrevista Guiada) supports seamless mode switching without losing recorded answers. View 2 (Diagnóstico & Explicação) dynamically adapts chart scales, sharpness/differentiation indices, and multisector career recommendations. View 3 (Base Metodológica) presents the theoretical framework and interactive intersection matrix. -->
+  <!-- Visualization & Content Choices: 1. RIASEC Interests -> Compare 6 vocational vectors -> Radar Chart (Chart.js Canvas) with dynamic mode ceiling -> Shows vocational balance clearly. 2. Schein Career Anchors -> Rank 8 non-negotiable values tested via balanced 4-option blocks -> Horizontal Bar Chart (Chart.js Canvas) -> Best for comparing 8 multi-word labels cleanly. 3. DISC Behavioral Style -> Show proportional behavioral drivers -> Doughnut Chart (Chart.js Canvas) -> Highlights primary/secondary behavioral style. 4. Cross-Analysis Matrix -> Organize ecosystem & role matches across multiple industries -> Interactive Filterable HTML/Tailwind Cards -> Replaces static tables with explorable insights. -->
   <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
   <header class="bg-[#FFFFFF] border-b border-[#E6E2D8] sticky top-0 z-30">
@@ -79,7 +79,7 @@
         </button>
         <button id="nav-results" onclick="switchView('results')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8] flex items-center gap-1.5">
           <span>2. Diagnóstico & Explicação</span>
-          <span id="results-badge" class="text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]">0/14</span>
+          <span id="results-badge" class="text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]">0/24</span>
         </button>
         <button id="nav-methodology" onclick="switchView('methodology')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors bg-[#F2EFE9] text-[#4A504D] hover:bg-[#E6E2D8]">
           3. Base Metodológica
@@ -92,18 +92,18 @@
 
     <section id="view-interview" class="fade-in space-y-6">
       <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#EFECE6] pb-5 mb-6">
-          <div class="space-y-2 max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4EFEA] text-[#9E523B] text-xs font-semibold">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-5 border-b border-[#EFECE6] pb-6 mb-6">
+          <div class="space-y-2.5 max-w-3xl">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-[#F4EFEA] text-[#9E523B] text-xs font-semibold">
               <span>🎙️ Sessão de Entrevista Estruturada</span>
               <span>•</span>
-              <span>Todas as Áreas Profissionais</span>
+              <span>Alternativas Objetivas (4 a 6 opções)</span>
             </div>
             <h2 class="font-serif-display text-2xl sm:text-3xl font-semibold text-[#262A28]">
-              Vamos mapear sua identidade profissional sem complicação
+              Mapeamento de identidade profissional com precisão analítica
             </h2>
             <p class="text-sm sm:text-base text-[#525855] leading-relaxed">
-              Como seu consultor de carreiras, conduzo esta entrevista em três etapas rápidas baseadas nos modelos <strong>RIASEC</strong> (o que você gosta de fazer), <strong>Âncoras de Schein</strong> (seus valores inegociáveis) e <strong>DISC</strong> (como você age e se comunica). Aplicável a qualquer área — saúde, direito, educação, engenharia, artes, negócios, setor público ou tecnologia —, basta escolher intuitivamente a opção que melhor reflete sua reação natural.
+              Esta entrevista integra os modelos <strong>RIASEC</strong>, <strong>Âncoras de Schein</strong> e <strong>DISC</strong> com pareamento combinatório equilibrado — evitando perguntas longas com excesso de alternativas. Escolha entre a <strong>Versão Padrão (24 questões)</strong> ou a <strong>Versão Estendida (42 questões)</strong> para máxima granularidade diagnóstica.
             </p>
           </div>
           <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
@@ -116,25 +116,42 @@
           </div>
         </div>
 
+        <div class="mb-6 p-4 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#1E4D5C]">Profundidade da Avaliação</span>
+            <p id="mode-description" class="text-xs text-[#525855] mt-0.5">
+              <strong>Modo Padrão (24 questões):</strong> 8 questões por módulo (~5 min). Equilíbrio ideal entre agilidade e precisão.
+            </p>
+          </div>
+          <div class="inline-flex p-1 rounded-xl bg-[#EFECE6] border border-[#DCD6C8] shrink-0">
+            <button id="btn-mode-standard" onclick="setQuizMode('standard')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#1E4D5C] text-white shadow-sm">
+              Padrão (24 questões)
+            </button>
+            <button id="btn-mode-extended" onclick="setQuizMode('extended')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-[#4A504D] hover:text-[#262A28]">
+              Estendida (42 questões)
+            </button>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
           <div id="mod-card-1" class="p-3.5 rounded-xl border border-[#1E4D5C] bg-[#F2F6F7] transition-all">
             <div class="flex items-center justify-between text-xs font-bold text-[#1E4D5C] uppercase tracking-wide">
               <span>Módulo I • RIASEC</span>
-              <span id="mod-count-1">0/4</span>
+              <span id="mod-count-1">0/8</span>
             </div>
             <p class="text-xs text-[#4A504D] mt-1">Interesses Vocacionais e Tarefas</p>
           </div>
           <div id="mod-card-2" class="p-3.5 rounded-xl border border-[#E6E2D8] bg-[#FAF8F5] transition-all">
             <div class="flex items-center justify-between text-xs font-bold text-[#525855] uppercase tracking-wide">
               <span>Módulo II • Schein</span>
-              <span id="mod-count-2">0/4</span>
+              <span id="mod-count-2">0/8</span>
             </div>
             <p class="text-xs text-[#525855] mt-1">Âncoras e Valores Inegociáveis</p>
           </div>
           <div id="mod-card-3" class="p-3.5 rounded-xl border border-[#E6E2D8] bg-[#FAF8F5] transition-all">
             <div class="flex items-center justify-between text-xs font-bold text-[#525855] uppercase tracking-wide">
               <span>Módulo III • DISC</span>
-              <span id="mod-count-3">0/6</span>
+              <span id="mod-count-3">0/8</span>
             </div>
             <p class="text-xs text-[#525855] mt-1">Estilo Comportamental e Reação</p>
           </div>
@@ -142,7 +159,7 @@
 
         <div class="mb-6">
           <div class="flex items-center justify-between text-xs font-semibold text-[#525855] mb-2">
-            <span id="progress-label">Questão 1 de 14</span>
+            <span id="progress-label">Questão 1 de 24</span>
             <span id="progress-percent">0% concluído</span>
           </div>
           <div class="w-full h-2.5 bg-[#EFECE6] rounded-full overflow-hidden">
@@ -152,7 +169,7 @@
         </div>
 
         <div id="question-stage" class="bg-[#FAF8F5] border border-[#E6E2D8] rounded-2xl p-5 sm:p-7">
-          <div class="flex items-center justify-between gap-2 mb-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
             <span id="q-module-badge" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-[#E6F0F2] text-[#1E4D5C]">
               Módulo I: Interesses Vocacionais (RIASEC)
             </span>
@@ -188,17 +205,25 @@
       <div class="bg-[#FFFFFF] border border-[#E6E2D8] rounded-2xl p-6 sm:p-8 shadow-sm">
         <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
           <div class="space-y-2 max-w-3xl">
-            <span class="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#E6F0F2] text-[#1E4D5C]">
-              📊 Devolutiva Analítica do Consultor
-            </span>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#E6F0F2] text-[#1E4D5C]">
+                📊 Devolutiva Analítica do Consultor
+              </span>
+              <span id="results-mode-tag" class="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-[#F4EFEA] text-[#9E523B]">
+                Base: Versão Padrão (24 questões)
+              </span>
+            </div>
             <h2 class="font-serif-display text-2xl sm:text-3xl font-semibold text-[#262A28]">
               Seu Perfil Tridimensional e Parecer de Carreira
             </h2>
             <p class="text-sm sm:text-base text-[#525855] leading-relaxed">
-              Esta seção consolida suas respostas nos três instrumentos psicométricos para revelar <strong>o que</strong> engaja você (Código Holland), <strong>por que</strong> você toma decisões de carreira (Âncora de Schein) e <strong>como</strong> você opera sob pressão e em equipe (Perfil DISC), traduzindo os dados em recomendações práticas para diferentes setores.
+              Esta seção consolida suas escolhas nos três instrumentos psicométricos para revelar <strong>o que</strong> engaja você (Código Holland), <strong>por que</strong> você toma decisões de carreira (Âncora de Schein) e <strong>como</strong> você opera sob pressão e em equipe (Perfil DISC).
             </p>
           </div>
-          <div class="flex flex-wrap gap-2 shrink-0">
+          <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
+            <button id="btn-upgrade-extended" onclick="upgradeToExtended()" class="px-4 py-2.5 rounded-xl bg-[#1E4D5C] text-white hover:bg-[#163B47] text-xs font-semibold transition-colors">
+              🔬 Aprofundar no Modo Estendido (+18 questões)
+            </button>
             <button onclick="switchView('interview')" class="px-4 py-2.5 rounded-xl border border-[#D5CFC2] bg-[#FAF8F5] hover:bg-[#EFECE6] text-xs font-semibold text-[#262A28] transition-colors">
               ✎ Revisar Minhas Respostas
             </button>
@@ -207,7 +232,7 @@
 
         <div id="incomplete-alert" class="hidden mt-6 p-4 rounded-xl bg-[#FDF4F0] border border-[#EBC7B9] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="text-sm text-[#7D3C27]">
-            <strong>Entrevista em andamento:</strong> Você respondeu <span id="alert-answered-count">0</span> de 14 questões. Complete todas as perguntas para obter um diagnóstico preciso ou simule um perfil para explorar o painel.
+            <strong>Entrevista em andamento:</strong> Você respondeu <span id="alert-answered-count">0</span> de <span id="alert-total-count">24</span> questões ativas. Complete todas as perguntas para máxima precisão estatística ou simule um perfil para explorar o painel.
           </div>
           <div class="flex gap-2 shrink-0">
             <button onclick="switchView('interview')" class="px-3.5 py-2 rounded-lg bg-[#C86D51] text-white text-xs font-semibold hover:bg-[#B25B40]">
@@ -251,12 +276,27 @@
           </div>
         </div>
 
-        <div class="mt-7 p-6 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8]">
-          <div class="flex items-center gap-2.5 mb-3">
-            <span class="text-xl">💬</span>
-            <h3 class="font-serif-display text-lg sm:text-xl font-semibold text-[#262A28]">Síntese Personalizada do Consultor</h3>
+        <div class="mt-7 grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="lg:col-span-2 p-6 rounded-2xl bg-[#FAF8F5] border border-[#E6E2D8]">
+            <div class="flex items-center gap-2.5 mb-3">
+              <span class="text-xl">💬</span>
+              <h3 class="font-serif-display text-lg sm:text-xl font-semibold text-[#262A28]">Síntese Personalizada do Consultor</h3>
+            </div>
+            <div id="consultant-narrative" class="space-y-3 text-sm sm:text-base text-[#3C423F] leading-relaxed"></div>
           </div>
-          <div id="consultant-narrative" class="space-y-3 text-sm sm:text-base text-[#3C423F] leading-relaxed"></div>
+
+          <div class="p-6 rounded-2xl bg-[#F2F6F7] border border-[#CFE0DC] flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-lg">📐</span>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-[#1E4D5C]">Nitidez & Amplitude Psicométrica</h3>
+              </div>
+              <div id="profile-sharpness-box" class="space-y-2.5 text-xs text-[#3C423F] leading-relaxed"></div>
+            </div>
+            <div class="pt-3 border-t border-[#CFE0DC] text-xs text-[#525855]">
+              <strong>Pareamento Combinatório:</strong> Cada âncora de Schein e vetor RIASEC foi testado em blocos balanceados de 4 a 6 opções para evitar viés de leitura.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -266,7 +306,7 @@
             <span class="text-xs font-bold uppercase tracking-wider text-[#3B665B]">Módulo I • Holland Code</span>
             <h3 class="text-lg font-bold text-[#262A28] mt-1">Mapa de Interesses RIASEC</h3>
             <p class="text-xs text-[#525855] mt-1 mb-4 leading-relaxed">
-              Distribuição dos seis vetores de interesse vocacional. Os três maiores índices formam seu código de exploração profissional.
+              Distribuição dos seis vetores vocacionais. Os três maiores índices formam seu código de exploração profissional.
             </p>
           </div>
           <div class="chart-container">
@@ -280,7 +320,7 @@
             <span class="text-xs font-bold uppercase tracking-wider text-[#4B5B82]">Módulo II • Edgar Schein</span>
             <h3 class="text-lg font-bold text-[#262A28] mt-1">Hierarquia de Âncoras</h3>
             <p class="text-xs text-[#525855] mt-1 mb-4 leading-relaxed">
-              Intensidade de suas motivações centrais. A âncora líder funciona como filtro decisório para aceitar ou recusar propostas.
+              Intensidade de suas motivações centrais avaliadas por comparação direta entre blocos de 4 alternativas.
             </p>
           </div>
           <div class="chart-container">
@@ -372,7 +412,7 @@
             </div>
             <h3 class="text-lg font-bold text-[#262A28]">Âncoras de Carreira</h3>
             <p class="text-xs text-[#525855] leading-relaxed">
-              Identifica as autopercepções de competência, motivos centrais e valores dos quais o profissional não abre mão em momentos de crise ou escolha difícil, garantindo alinhamento cultural e retenção.
+              Avaliadas em blocos incompletos balanceados de 4 opções, identificam as autopercepções de competência, motivos centrais e valores dos quais o profissional não abre mão em escolhas difíceis.
             </p>
             <div class="pt-2 border-t border-[#E6E2D8] text-xs font-semibold text-[#4B5B82]">
               Pergunta-chave: "Por que eu faço minhas escolhas?"
@@ -433,193 +473,563 @@
       {
         id: 1,
         module: 1,
+        extendedOnly: false,
         moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
-        text: "1. Diante de um projeto profissional iminente, qual tipo de atividade gera o maior nível de motivação intrínseca?",
+        text: "Diante de um projeto profissional iminente, qual tipo de atividade gera o maior nível de motivação intrínseca?",
         options: [
-          { key: "A", code: "R", text: "Construir, reparar, operar equipamentos ou realizar intervenções práticas e técnicas em campo ou estruturas." },
-          { key: "B", code: "I", text: "Investigar dados, resolver problemas complexos por meio de métodos científicos e analisar teorias." },
-          { key: "C", code: "A", text: "Criar conceitos originais, desenhar peças visuais, redigir conteúdos expressivos ou desenvolver soluções fora dos padrões convencionais." },
-          { key: "D", code: "S", text: "Ensinar, orientar pessoas, prestar assistência humana, atuar em mediação interpessoal ou treinar equipes." },
-          { key: "E", code: "E", text: "Convencer clientes, negociar acordos comerciais, liderar iniciativas estratégicas e assumir responsabilidade por metas." },
-          { key: "F", code: "C", text: "Organizar registros, gerenciar fluxos administrativos ou jurídicos, auditar conformidade e estruturar processos." }
+          { key: "A", code: "R", text: "Construir, reparar, operar equipamentos ou realizar intervenções práticas em campo ou estruturas." },
+          { key: "B", code: "I", text: "Investigar dados, resolver problemas complexos por métodos científicos e analisar teorias." },
+          { key: "C", code: "A", text: "Criar conceitos originais, desenhar peças visuais, redigir conteúdos expressivos ou inovar formatos." },
+          { key: "D", code: "S", text: "Ensinar, orientar pessoas, prestar assistência humana, atuar em mediação ou treinar equipes." },
+          { key: "E", code: "E", text: "Convencer clientes, negociar acordos comerciais, liderar estratégias e assumir metas." },
+          { key: "F", code: "C", text: "Organizar registros, gerenciar fluxos administrativos ou jurídicos e auditar conformidade." }
         ]
       },
       {
         id: 2,
         module: 1,
+        extendedOnly: false,
         moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
-        text: "2. Qual tarefa profissional é realizada com maior fluidez, gerando a sensação de engajamento natural e menor percepção do tempo?",
+        text: "Qual tarefa profissional é realizada com maior fluidez, gerando sensação de engajamento natural?",
         options: [
           { key: "A", code: "R", text: "Atividades práticas com ferramentas, procedimentos técnicos manuais ou trabalhos de campo." },
-          { key: "B", code: "I", text: "Leitura de estudos e diagnósticos analíticos, identificação de causas-raiz e elaboração de pareceres lógicos." },
-          { key: "C", code: "A", text: "Atividades de design, redação criativa, composição ou proposição de formatos inovadores sem regras rígidas." },
-          { key: "D", code: "S", text: "Aconselhamento de pessoas, desenvolvimento de planos de cuidado ou aprendizagem e mediação de conflitos." },
-          { key: "E", code: "E", text: "Realização de apresentações persuasivas para decisores, coordenação comercial ou articulação de parcerias." },
-          { key: "F", code: "C", text: "Controle de rotinas operacionais, auditoria de documentos, verificação de normas e gestão de arquivos." }
+          { key: "B", code: "I", text: "Leitura de diagnósticos analíticos, identificação de causas-raiz e elaboração de pareceres lógicos." },
+          { key: "C", code: "A", text: "Atividades de design, redação criativa, composição ou proposição de soluções sem regras rígidas." },
+          { key: "D", code: "S", text: "Aconselhamento de pessoas, planos de cuidado ou aprendizagem e mediação de conflitos." },
+          { key: "E", code: "E", text: "Apresentações persuasivas para decisores, coordenação comercial ou articulação de parcerias." },
+          { key: "F", code: "C", text: "Controle de rotinas operacionais, auditoria de documentos, verificação de normas e arquivos." }
         ]
       },
       {
         id: 3,
         module: 1,
+        extendedOnly: false,
         moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
-        text: "3. Em uma eventual indicação para liderar uma frente de trabalho especial nos próximos meses, a preferência recairia sobre:",
+        text: "Em uma indicação para liderar uma frente de trabalho especial nos próximos meses, sua preferência recairia sobre:",
         options: [
           { key: "A", code: "R", text: "A montagem ou execução prática da infraestrutura física, clínica ou operacional do projeto." },
-          { key: "B", code: "I", text: "O estudo detalhado de viabilidade, pesquisa diagnóstica e análise preditiva dos cenários possíveis." },
-          { key: "C", code: "A", text: "O desenvolvimento da identidade de marca, expressão visual, narrativa ou inovação conceitual da entrega." },
+          { key: "B", code: "I", text: "O estudo detalhado de viabilidade, pesquisa diagnóstica e análise preditiva de cenários." },
+          { key: "C", code: "A", text: "O desenvolvimento da identidade visual, narrativa, estética ou inovação conceitual da entrega." },
           { key: "D", code: "S", text: "O programa de acolhimento, capacitação, desenvolvimento humano e suporte aos envolvidos." },
           { key: "E", code: "E", text: "A negociação de orçamento, captação de recursos e defesa da proposta perante a direção." },
-          { key: "F", code: "C", text: "O mapeamento minucioso dos processos, governança, prazos e controle de qualidade das entregas." }
+          { key: "F", code: "C", text: "O mapeamento minucioso dos processos, governança, prazos e controle de qualidade." }
         ]
       },
       {
         id: 4,
         module: 1,
+        extendedOnly: false,
         moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
-        text: "4. Qual ambiente profissional é percebido como o mais estimulante para o desenvolvimento individual?",
+        text: "Qual ambiente profissional é percebido como o mais estimulante para o seu desenvolvimento?",
         options: [
-          { key: "A", code: "R", text: "Ambientes operacionais, oficinas, centros cirúrgicos, laboratórios práticos ou campos de trabalho direto." },
-          { key: "B", code: "I", text: "Centros de pesquisa, núcleos analíticos, bibliotecas especializadas e laboratórios científicos ou tecnológicos." },
-          { key: "C", code: "A", text: "Agências de criação, estúdios de arquitetura e design, editoras, espaços culturais e núcleos de inovação." },
-          { key: "D", code: "S", text: "Instituições de ensino, hospitais e clínicas, ONGs, centros de desenvolvimento humano ou recursos humanos." },
-          { key: "E", code: "E", text: "Salas de negociação, ambientes empresariais competitivos, empreendimentos em expansão ou frentes comerciais." },
-          { key: "F", code: "C", text: "Departamentos de controladoria, escritórios jurídicos regulatórios, auditoria interna ou gestão pública estruturada." }
+          { key: "A", code: "R", text: "Ambientes operacionais, oficinas, centros cirúrgicos, laboratórios práticos ou trabalho em campo." },
+          { key: "B", code: "I", text: "Centros de pesquisa, núcleos analíticos, bibliotecas especializadas e laboratórios científicos." },
+          { key: "C", code: "A", text: "Agências de criação, estúdios de arquitetura e design, editoras ou espaços culturais." },
+          { key: "D", code: "S", text: "Instituições de ensino, hospitais e clínicas, ONGs ou centros de desenvolvimento humano." },
+          { key: "E", code: "E", text: "Salas de negociação, ambientes empresariais competitivos ou empreendimentos em expansão." },
+          { key: "F", code: "C", text: "Departamentos de controladoria, escritórios regulatórios, auditoria ou gestão pública estruturada." }
         ]
       },
       {
         id: 5,
-        module: 2,
-        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
-        text: "5. Ao analisar uma nova oportunidade profissional, qual fator possui peso decisivo absoluto para a aceitação da proposta?",
+        module: 1,
+        extendedOnly: false,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "Ao enfrentar um problema inédito no trabalho, qual é a sua primeira abordagem natural?",
         options: [
-          { key: "A", code: "TF", text: "A oportunidade de aprofundar o conhecimento técnico e tornar-se uma referência em uma área de especialização." },
-          { key: "B", code: "GG", text: "A perspectiva clara de ascensão para cargos de gestão geral, diretoria e liderança executiva ampla." },
-          { key: "C", code: "AU", text: "A garantia de autonomia para gerir horários, ritmo de trabalho, local de atuação e escolhas metodológicas." },
-          { key: "D", code: "SE", text: "A estabilidade do vínculo profissional, a previsibilidade financeira e a segurança oferecida pela instituição." },
-          { key: "E", code: "EC", text: "A possibilidade de empreender, criar um novo negócio do zero ou desenvolver projetos com marca pessoal." },
-          { key: "F", code: "SV", text: "O alinhamento do trabalho com causas sociais, valores éticos profundos e a promoção do bem-estar comunitário." },
-          { key: "G", code: "CH", text: "A presença constante de metas extremamente desafiadoras e a necessidade de resolver problemas considerados insolúveis." },
-          { key: "H", code: "LS", text: "A garantia de que a rotina profissional não interferirá no equilíbrio com a vida familiar e com os interesses pessoais." }
+          { key: "A", code: "R", text: "Testar na prática, ajustar componentes tangíveis e observar o funcionamento imediato." },
+          { key: "B", code: "I", text: "Coletar evidências, formular hipóteses e investigar a fundo a lógica por trás da falha." },
+          { key: "C", code: "A", text: "Imaginar uma abordagem completamente nova, combinando referências pouco usuais." },
+          { key: "D", code: "S", text: "Ouvir as pessoas afetadas, compreender o impacto humano e construir uma solução conjunta." },
+          { key: "E", code: "E", text: "Mobilizar os principais decisores, definir metas de recuperação e liderar a execução rápida." },
+          { key: "F", code: "C", text: "Consultar os protocolos estabelecidos, revisar registros históricos e restabelecer a ordem." }
         ]
       },
       {
         id: 6,
-        module: 2,
-        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
-        text: "6. O sentimento de frustração ou insatisfação na trajetória profissional seria desencadeado com maior intensidade por:",
+        module: 1,
+        extendedOnly: false,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "Qual tipo de reconhecimento externo traz maior satisfação genuína após uma entrega importante?",
         options: [
-          { key: "A", code: "TF", text: "Ser promovido a um cargo administrativo que distancie o profissional do exercício prático de sua especialidade." },
-          { key: "B", code: "GG", text: "Permanecer restrito a uma função técnica sem acesso a posições de comando e tomada de decisão estratégica." },
-          { key: "C", code: "AU", text: "Estar submetido a controles rígidos de horário, regras burocráticas excessivas e constante supervisão direta." },
-          { key: "D", code: "SE", text: "Enfrentar instabilidade financeira, risco iminente de desligamento ou constantes reestruturações organizacionais." },
-          { key: "E", code: "EC", text: "Perceber a impossibilidade de criar iniciativas próprias ou fundar projetos que carreguem sua marca autoral." },
-          { key: "F", code: "SV", text: "Constatar que as atividades diárias não geram impacto positivo para a sociedade ou para outras pessoas." },
-          { key: "G", code: "CH", text: "Ser alocado em funções rotineiras, fáceis e previsíveis, destituídas de competição ou desafios complexos." },
-          { key: "H", code: "LS", text: "Ter de sacrificar de forma recorrente o convívio com a família, a saúde e os momentos de lazer em função do trabalho." }
+          { key: "A", code: "R", text: "O elogio pela destreza técnica, precisão operacional e funcionamento impecável do que foi feito." },
+          { key: "B", code: "I", text: "O reconhecimento pela profundidade intelectual, rigor analítico e descoberta de soluções complexas." },
+          { key: "C", code: "A", text: "A admiração pela originalidade estética, sensibilidade autoral e ousadia criativa do trabalho." },
+          { key: "D", code: "S", text: "A gratidão sincera de pessoas que foram ajudadas, ensinadas ou transformadas pela sua atuação." },
+          { key: "E", code: "E", text: "O destaque pelos resultados financeiros, expansão de mercado ou influência estratégica alcançada." },
+          { key: "F", code: "C", text: "A confiança institucional na sua confiabilidade, organização exemplar e zero margem de erro." }
         ]
       },
       {
         id: 7,
-        module: 2,
-        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
-        text: "7. Qual afirmação reflete com maior exatidão o conceito pessoal de sucesso profissional?",
+        module: 1,
+        extendedOnly: false,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "Se pudesse escolher livremente um tema para estudar ou aperfeiçoar durante os próximos seis meses, seria:",
         options: [
-          { key: "A", code: "TF", text: "\"Alcançar a excelência técnica e ser reconhecido pelos pares como uma autoridade na minha especialidade.\"" },
-          { key: "B", code: "GG", text: "\"Dirigir uma organização ou unidade de negócio, assumindo a responsabilidade pelos resultados globais.\"" },
-          { key: "C", code: "AU", text: "\"Definir minhas próprias regras de trabalho, mantendo independência de diretrizes institucionais rígidas.\"" },
-          { key: "D", code: "SE", text: "\"Manter uma carreira segura, estável e previsível, que ofereça tranquilidade de longo prazo.\"" },
-          { key: "E", code: "EC", text: "\"Construir uma empresa, escritório, clínica ou projeto de sucesso a partir de uma ideia própria.\"" },
-          { key: "F", code: "SV", text: "\"Saber que o meu trabalho diário contribui diretamente para a transformação positiva do mundo e das pessoas.\"" },
-          { key: "G", code: "CH", text: "\"Superar obstáculos difíceis, solucionar crises graves e vencer desafios aparentemente intransponíveis.\"" },
-          { key: "H", code: "LS", text: "\"Integrar as demandas de trabalho de forma harmoniosa com os compromissos pessoais e familiares.\"" }
+          { key: "A", code: "R", text: "Operação de tecnologias físicas, técnicas aplicadas, ergonomia ou procedimentos práticos." },
+          { key: "B", code: "I", text: "Metodologia científica, análise de dados avançada, diagnóstico clínico ou teoria econômica." },
+          { key: "C", code: "A", text: "Comunicação visual, escrita criativa, design de experiências ou expressão artística." },
+          { key: "D", code: "S", text: "Psicologia aplicada, didática de ensino, mediação de conflitos ou liderança humanizada." },
+          { key: "E", code: "E", text: "Estratégia empresarial, técnicas de negociação, vendas complexas ou gestão de negócios." },
+          { key: "F", code: "C", text: "Governança corporativa, legislação regulatória, auditoria contábil ou gestão da qualidade." }
         ]
       },
       {
         id: 8,
-        module: 2,
-        moduleTitle: "Módulo II: Motivações e Valores (Base Âncoras de Schein)",
-        text: "8. Diante da necessidade de declinar uma proposta de promoção ou transferência, o principal motivo seria:",
+        module: 1,
+        extendedOnly: false,
+        moduleTitle: "Módulo I: Interesses Vocacionais (Base RIASEC)",
+        text: "Em uma equipe multidisciplinar, qual papel você acaba assumindo espontaneamente?",
         options: [
-          { key: "A", code: "TF", text: "O afastamento definitivo da atuação técnica especializada em troca de funções de gestão burocrática." },
-          { key: "B", code: "GG", text: "A falta de perspectiva de alcançar posições estratégicas de liderança geral na nova estrutura." },
-          { key: "C", code: "AU", text: "A exigência de presença física rígida e a perda da liberdade de gestão do próprio tempo e método." },
-          { key: "D", code: "SE", text: "A transição para um modelo contratual de alto risco financeiro e sem garantias de estabilidade." },
-          { key: "E", code: "EC", text: "A impossibilidade de manter a autoria ou o controle sobre a criação de novos projetos e empreendimentos." },
-          { key: "F", code: "SV", text: "O desalinhamento das novas atribuições com os princípios éticos e valores morais pessoais." },
-          { key: "G", code: "CH", text: "A baixa exigência intelectual ou operacional do novo cargo, caracterizado por tarefas simples." },
-          { key: "H", code: "LS", text: "O aumento significativo da jornada de trabalho e viagens que comprometam a qualidade de vida pessoal." }
+          { key: "A", code: "R", text: "O executor prático que coloca a mão na massa e garante que os recursos funcionem." },
+          { key: "B", code: "I", text: "O analista crítico que questiona premissas e valida a consistência técnica das ideias." },
+          { key: "C", code: "A", text: "O idealizador conceitual que traz perspectivas originais e dá forma expressiva ao projeto." },
+          { key: "D", code: "S", text: "O articulador humano que integra o grupo, apoia colegas e facilita o entendimento mútuo." },
+          { key: "E", code: "E", text: "O catalisador estratégico que direciona prioridades, negocia prazos e representa a equipe." },
+          { key: "F", code: "C", text: "O organizador metódico que estrutura o cronograma, documenta decisões e acompanha entregas." }
         ]
       },
       {
         id: 9,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "9. Durante reuniões estratégicas voltadas à deliberação de soluções sob forte pressão de prazos, a atitude natural envolve:",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Com duas horas livres na agenda profissional para dedicar a uma atividade opcional, você escolheria:",
         options: [
-          { key: "A", code: "D", text: "Assumir a condução do debate, defender posições de forma assertiva e focar na decisão rápida." },
-          { key: "B", code: "I", text: "Estimular a participação dos presentes, propor soluções entusiásticas e utilizar a persuasão verbal." },
-          { key: "C", code: "S", text: "Ouvir atentamente as ponderações, buscar o consenso entre as partes e zelar pela harmonia do grupo." },
-          { key: "D", code: "C", text: "Solicitar evidências concretas, analisar detalhadamente os riscos envolvidos e exigir o cumprimento de critérios." }
+          { key: "A", code: "R", text: "Testar um equipamento novo ou aperfeiçoar um procedimento técnico prático." },
+          { key: "B", code: "I", text: "Ler um estudo aprofundado ou investigar uma anomalia nos indicadores da área." },
+          { key: "C", code: "A", text: "Esboçar um conceito visual, escrever um artigo autoral ou repensar a estética de um material." },
+          { key: "D", code: "S", text: "Mentorar um colega mais jovem ou conduzir uma roda de escuta e desenvolvimento." }
         ]
       },
       {
         id: 10,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "10. Como se caracteriza o comportamento diante da necessidade de alterar bruscamente processos consolidados de trabalho?",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Na avaliação final de uma entrega relevante, qual aspecto você faz questão pessoal de revisar?",
         options: [
-          { key: "A", code: "D", text: "Reage-se com velocidade, encarando a mudança como uma oportunidade para acelerar resultados e eliminar ineficiências." },
-          { key: "B", code: "I", text: "Engaja-se na divulgação da mudança, promovendo a visão positiva do novo cenário entre os pares." },
-          { key: "C", code: "S", text: "Prefere-se a manutenção do método habitual, demonstrando cautela diante de alterações sem planejamento prévio longo." },
-          { key: "D", code: "C", text: "Avalia-se metodicamente o novo fluxo para garantir que a precisão técnica e a conformidade não sejam comprometidas." }
+          { key: "A", code: "E", text: "O impacto comercial, a força persuasiva dos argumentos e o retorno estratégico gerado." },
+          { key: "B", code: "C", text: "A conformidade normativa, a exatidão dos números e a organização formal dos anexos." },
+          { key: "C", code: "R", text: "A aplicabilidade prática, a funcionalidade real e a viabilidade operacional da execução." },
+          { key: "D", code: "I", text: "A solidez metodológica, o embasamento lógico e a coerência das conclusões técnicas." }
         ]
       },
       {
         id: 11,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "11. Qual condição no ambiente de trabalho atua como o principal fator causador de estresse e queda de produtividade?",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Ao encerrar um semestre de trabalho intenso, qual conquista traz maior sensação de dever cumprido?",
         options: [
-          { key: "A", code: "D", text: "A lentidão na tomada de decisões, a falta de autonomia e a convivência com ineficiências operacionais." },
-          { key: "B", code: "I", text: "O isolamento social, ambientes de trabalho distantes e a ausência de reconhecimento ou interação pública." },
-          { key: "C", code: "S", text: "A ocorrência de mudanças repentinas, instabilidade de diretrizes, conflitos abertos e ritmo de trabalho caótico." },
-          { key: "D", code: "C", text: "A desorganização, o descumprimento de prazos combinados, a falta de dados e a necessidade de improvisação." }
+          { key: "A", code: "A", text: "Ter criado algo autêntico, inovador e esteticamente marcante que não existia antes." },
+          { key: "B", code: "S", text: "Ter contribuído diretamente para o crescimento, bem-estar ou aprendizado de outras pessoas." },
+          { key: "C", code: "E", text: "Ter superado metas ambiciosas, fechado parcerias estratégicas e ampliado resultados." },
+          { key: "D", code: "C", text: "Ter mantido todos os processos auditáveis, organizados, dentro do prazo e sem falhas." }
         ]
       },
       {
         id: 12,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "12. A comunicação profissional com pares e superiores hierárquicos é estruturada predominantemente de forma:",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Qual destas situações desperta sua curiosidade profissional de maneira mais imediata?",
         options: [
-          { key: "A", code: "D", text: "Direta, sucinta, focada em objetivos de curto prazo e orientada a resultados." },
-          { key: "B", code: "I", text: "Persuasiva, expressiva, calorosa, focada em relacionamentos e engajamento verbal." },
-          { key: "C", code: "S", text: "Moderada, ponderada, empática, priorizando a escuta atenta e a manutenção do clima positivo." },
-          { key: "D", code: "C", text: "Formal, analítica, detalhada, fundamentada em fatos, documentos e critérios técnicos." }
+          { key: "A", code: "R", text: "Conhecer por dentro a operação física de uma grande obra, fábrica, hospital ou fazenda." },
+          { key: "B", code: "A", text: "Visitar uma exposição de design, estúdio de criação ou laboratório de inovação cultural." },
+          { key: "C", code: "E", text: "Acompanhar uma negociação de fusão, lançamento de negócio ou estratégia de expansão." },
+          { key: "D", code: "S", text: "Participar de um programa comunitário, iniciativa educacional ou projeto de impacto humano." }
         ]
       },
       {
         id: 13,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "13. Diante de um feedback crítico referente a uma entrega ou desempenho recente, a reação imediata é:",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Diante de uma crise institucional severa, onde você sente que sua contribuição é mais valiosa?",
         options: [
-          { key: "A", code: "D", text: "Tratar a crítica como um desafio direto a ser superado rapidamente no ciclo de entregas seguinte." },
-          { key: "B", code: "I", text: "Procurar o emissor para dialogar abertamente, visando manter o alinhamento pessoal e o bom relacionamento." },
-          { key: "C", code: "S", text: "Absorver a informação de forma reservada, buscando ajustar o comportamento de modo gradual e harmonioso." },
-          { key: "D", code: "C", text: "Analisar a fundamentação lógica da crítica com base em regras prévias, dados empíricos e parâmetros acordados." }
+          { key: "A", code: "I", text: "No diagnóstico técnico da causa-raiz e na modelagem analítica de cenários de saída." },
+          { key: "B", code: "C", text: "Na auditoria de riscos, controle documental e garantia de cumprimento legal e regulatório." },
+          { key: "C", code: "S", text: "No acolhimento das equipes afetadas, comunicação empática e preservação do clima humano." },
+          { key: "D", code: "E", text: "Na tomada de frente executiva, negociação com stakeholders e condução firme da virada." }
         ]
       },
       {
         id: 14,
-        module: 3,
-        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
-        text: "14. Qual elemento proporciona a maior sensação de realização no cotidiano profissional?",
+        module: 1,
+        extendedOnly: true,
+        moduleTitle: "Módulo I (Aprofundamento): Trade-offs Vocacionais",
+        text: "Qual recurso ou ferramenta é absolutamente indispensável para a qualidade do seu dia a dia?",
         options: [
-          { key: "A", code: "D", text: "Deter o controle de decisões, exercer autonomia e atingir metas desafiadoras." },
-          { key: "B", code: "I", text: "Obter visibilidade, receber reconhecimento do grupo e influenciar positivamente as pessoas." },
-          { key: "C", code: "S", text: "Integrar uma equipe coesa, atuar em um ambiente estável e colaborar de forma previsível." },
-          { key: "D", code: "C", text: "Garantir o cumprimento de padrões rigorosos de qualidade, mantendo a precisão e a conformidade." }
+          { key: "A", code: "R", text: "Instrumentos técnicos precisos, equipamentos funcionais e estrutura prática adequada." },
+          { key: "B", code: "I", text: "Acesso a bases de dados confiáveis, literatura especializada e ferramentas de análise." },
+          { key: "C", code: "A", text: "Liberdade de criação, recursos visuais ou editoriais e espaço para experimentação." },
+          { key: "D", code: "C", text: "Sistemas organizados de registro, fluxogramas claros, checklists e normas bem definidas." }
+        ]
+      },
+      {
+        id: 15,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Entre os critérios abaixo, qual possui maior peso decisivo ao avaliar uma nova proposta profissional?",
+        options: [
+          { key: "A", code: "TF", text: "Aprofundar o domínio técnico e tornar-se referência reconhecida em uma especialidade." },
+          { key: "B", code: "GG", text: "Assumir posições de liderança geral, gestão multidisciplinar e responsabilidade por resultados globais." },
+          { key: "C", code: "AU", text: "Ter autonomia para gerir horários, ritmo de trabalho, local e métodos próprios de execução." },
+          { key: "D", code: "SE", text: "Contar com estabilidade contratual, previsibilidade financeira e solidez institucional de longo prazo." }
+        ]
+      },
+      {
+        id: 16,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Considerando outros quatro direcionadores de carreira, qual deles fala mais alto nas suas escolhas?",
+        options: [
+          { key: "A", code: "EC", text: "Criar um negócio, clínica, escritório ou projeto próprio que carregue sua marca autoral." },
+          { key: "B", code: "SV", text: "Dedicar-se a uma causa ética, social ou humana que gere impacto positivo na sociedade." },
+          { key: "C", code: "CH", text: "Enfrentar metas altamente competitivas e solucionar problemas considerados insolúveis." },
+          { key: "D", code: "LS", text: "Preservar o equilíbrio harmonioso entre trabalho, convívio familiar, saúde e vida pessoal." }
+        ]
+      },
+      {
+        id: 17,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Qual destas situações provocaria maior desgaste ou frustração na sua rotina profissional?",
+        options: [
+          { key: "A", code: "TF", text: "Ser afastado da prática especializada para exercer apenas tarefas administrativas genéricas." },
+          { key: "B", code: "EC", text: "Trabalhar em um ambiente onde não há espaço para empreender ou criar iniciativas próprias." },
+          { key: "C", code: "AU", text: "Submeter-se a controles rígidos de ponto, burocracia excessiva e supervisão constante." },
+          { key: "D", code: "CH", text: "Ficar alocado em uma função rotineira, previsível e sem desafios intelectuais ou competitivos." }
+        ]
+      },
+      {
+        id: 18,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Qual destes cenários seria motivo suficiente para você pedir desligamento de uma organização?",
+        options: [
+          { key: "A", code: "GG", text: "Perceber que não há perspectiva real de ascensão a cargos executivos e tomada de decisão." },
+          { key: "B", code: "SV", text: "Constatar que as práticas da instituição ferem seus valores éticos ou não beneficiam pessoas." },
+          { key: "C", code: "SE", text: "Viver sob constante ameaça de cortes, instabilidade financeira ou mudanças bruscas de vínculo." },
+          { key: "D", code: "LS", text: "Ter de sacrificar sistematicamente finais de semana, férias e saúde em razão da jornada." }
+        ]
+      },
+      {
+        id: 19,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Qual frase melhor traduz a sua visão pessoal de sucesso profissional ao olhar para trás?",
+        options: [
+          { key: "A", code: "TF", text: "\"Tornei-me uma autoridade técnica respeitada pelos pares na minha área de conhecimento.\"" },
+          { key: "B", code: "SV", text: "\"Meu trabalho transformou vidas e contribuiu para uma sociedade mais justa e humana.\"" },
+          { key: "C", code: "AU", text: "\"Conquistei liberdade para trabalhar no meu próprio ritmo, sem depender de regras rígidas.\"" },
+          { key: "D", code: "LS", text: "\"Construí uma carreira sólida sem jamais abrir mão da minha família e qualidade de vida.\"" }
+        ]
+      },
+      {
+        id: 20,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Em uma negociação de mudança de cargo ou empresa, de qual condição você jamais abriria mão?",
+        options: [
+          { key: "A", code: "GG", text: "Escopo amplo de comando, gestão de equipes multidisciplinares e autonomia orçamentária." },
+          { key: "B", code: "EC", text: "Participação societária, propriedade intelectual ou liberdade para fundar novas frentes." },
+          { key: "C", code: "SE", text: "Contrato sólido, pacote de benefícios previsível e garantias claras de estabilidade." },
+          { key: "D", code: "CH", text: "Projetos de alta complexidade, turnaround ou metas audaciosas que testem seus limites." }
+        ]
+      },
+      {
+        id: 21,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "Você recusaria uma promoção com aumento salarial caso ela implicasse:",
+        options: [
+          { key: "A", code: "TF", text: "Abandonar definitivamente a atuação técnica especializada em favor de reuniões políticas." },
+          { key: "B", code: "GG", text: "Assumir um cargo de assessoria sem poder real de mando ou liderança sobre os resultados." },
+          { key: "C", code: "CH", text: "Migrar para uma área burocrática tranquila, porém sem problemas difíceis para resolver." },
+          { key: "D", code: "LS", text: "Aumentar drasticamente as viagens e horas extras, comprometendo sua rotina pessoal." }
+        ]
+      },
+      {
+        id: 22,
+        module: 2,
+        extendedOnly: false,
+        moduleTitle: "Módulo II: Valores Decisórios (Base Âncoras de Schein)",
+        text: "O que mantém você engajado e comprometido com uma instituição ao longo dos anos?",
+        options: [
+          { key: "A", code: "AU", text: "A confiança da liderança em deixar você decidir como, quando e onde entregar resultados." },
+          { key: "B", code: "SE", text: "A solidez da instituição, o plano de carreira estruturado e a segurança para planejar o futuro." },
+          { key: "C", code: "EC", text: "A oportunidade contínua de lançar produtos, unidades ou projetos autorais do zero." },
+          { key: "D", code: "SV", text: "A coerência entre o discurso institucional e o impacto social ou humano gerado na ponta." }
+        ]
+      },
+      {
+        id: 23,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Diante de duas propostas com remuneração equivalente, qual diferencial pesaria mais na sua escolha?",
+        options: [
+          { key: "A", code: "TF", text: "Acesso aos melhores recursos técnicos e projetos de ponta na sua especialidade." },
+          { key: "B", code: "SE", text: "Maior estabilidade histórica da organização e menor rotatividade de profissionais." },
+          { key: "C", code: "EC", text: "Espaço para desenvolver uma unidade nova como empreendedor interno ou sócio." },
+          { key: "D", code: "LS", text: "Modelo de trabalho flexível que respeita integralmente seus horários pessoais." }
+        ]
+      },
+      {
+        id: 24,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Qual destas realizações gera o maior sentimento de orgulho na sua história profissional?",
+        options: [
+          { key: "A", code: "GG", text: "Ter liderado uma operação complexa integrando diferentes áreas rumo a uma meta global." },
+          { key: "B", code: "AU", text: "Ter conquistado independência profissional para atuar sob suas próprias diretrizes." },
+          { key: "C", code: "SV", text: "Ter ajudado diretamente pessoas ou comunidades a superarem dificuldades reais." },
+          { key: "D", code: "CH", text: "Ter vencido uma crise ou obstáculo que todos julgavam impossível de resolver." }
+        ]
+      },
+      {
+        id: 25,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Qual destes sacrifícios você considera o mais difícil de aceitar em um projeto profissional?",
+        options: [
+          { key: "A", code: "TF", text: "Trabalhar de forma superficial sem tempo para aprofundamento técnico de excelência." },
+          { key: "B", code: "AU", text: "Pedir autorização formal para cada pequena decisão metodológica ou de agenda." },
+          { key: "C", code: "SV", text: "Atuar em um projeto lucrativo, mas desprovido de propósito humano ou utilidade social." },
+          { key: "D", code: "EC", text: "Executar apenas ideias de terceiros sem poder construir algo com sua própria assinatura." }
+        ]
+      },
+      {
+        id: 26,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Ao pesquisar sobre uma nova instituição antes de ingressar, o que você investiga primeiro?",
+        options: [
+          { key: "A", code: "GG", text: "A estrutura de governança, o tamanho da operação e os caminhos até a diretoria." },
+          { key: "B", code: "SE", text: "A saúde financeira, a longevidade no mercado e a política de retenção de pessoal." },
+          { key: "C", code: "CH", text: "O nível de ambição das metas, a competitividade do setor e os problemas críticos abertos." },
+          { key: "D", code: "LS", text: "A cultura real de respeito à jornada, flexibilidade e bem-estar dos profissionais." }
+        ]
+      },
+      {
+        id: 27,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Projetando sua carreira para os próximos cinco anos, qual cenário parece mais atraente?",
+        options: [
+          { key: "A", code: "TF", text: "Ser consultado como o maior especialista técnico para casos de alta complexidade." },
+          { key: "B", code: "GG", text: "Ocupar uma cadeira executiva com responsabilidade estratégica sobre toda a organização." },
+          { key: "C", code: "AU", text: "Atuar como consultor independente ou profissional liberal com total gestão da agenda." },
+          { key: "D", code: "LS", text: "Manter uma rotina estável e previsível que permita dedicar tempo pleno aos projetos pessoais." }
+        ]
+      },
+      {
+        id: 28,
+        module: 2,
+        extendedOnly: true,
+        moduleTitle: "Módulo II (Aprofundamento): Dilemas de Âncora",
+        text: "Nos dias mais exigentes de trabalho, o que renova sua energia para continuar?",
+        options: [
+          { key: "A", code: "SE", text: "A certeza de estar construindo patrimônio e segurança sólida para o futuro." },
+          { key: "B", code: "EC", text: "A empolgação de ver uma ideia própria ganhando forma e conquistando espaço." },
+          { key: "C", code: "SV", text: "A consciência de que seu esforço faz diferença concreta na vida de outras pessoas." },
+          { key: "D", code: "CH", text: "A adrenalina intelectual de superar um adversário difícil ou decifrar um impasse crítico." }
+        ]
+      },
+      {
+        id: 29,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Durante reuniões estratégicas sob forte pressão de prazos, sua atitude natural envolve:",
+        options: [
+          { key: "A", code: "D", text: "Assumir a condução do debate, defender posições de forma assertiva e focar na decisão rápida." },
+          { key: "B", code: "I", text: "Estimular a participação dos presentes, propor soluções entusiásticas e usar a persuasão." },
+          { key: "C", code: "S", text: "Ouvir atentamente as ponderações, buscar consenso e zelar pela harmonia do grupo." },
+          { key: "D", code: "C", text: "Solicitar evidências concretas, analisar riscos detalhadamente e exigir critérios técnicos." }
+        ]
+      },
+      {
+        id: 30,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Como se caracteriza seu comportamento diante da necessidade de alterar bruscamente processos consolidados?",
+        options: [
+          { key: "A", code: "D", text: "Reage com velocidade, encarando a mudança como oportunidade para acelerar resultados." },
+          { key: "B", code: "I", text: "Engaja-se na divulgação da mudança, promovendo o entusiasmo pelo novo cenário entre os pares." },
+          { key: "C", code: "S", text: "Prefere a transição gradual e planejada, demonstrando cautela com rupturas repentinas." },
+          { key: "D", code: "C", text: "Avalia metodicamente o novo fluxo para assegurar que a precisão e conformidade não caiam." }
+        ]
+      },
+      {
+        id: 31,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Qual condição no ambiente de trabalho atua como o principal gatilho de estresse para você?",
+        options: [
+          { key: "A", code: "D", text: "Lentidão na tomada de decisões, falta de autonomia e convivência com ineficiência." },
+          { key: "B", code: "I", text: "Isolamento social, ambientes frios e ausência de reconhecimento ou interação." },
+          { key: "C", code: "S", text: "Instabilidade constante de diretrizes, conflitos abertos e ritmo de trabalho caótico." },
+          { key: "D", code: "C", text: "Desorganização, falta de dados confiáveis, improviso e descumprimento de regras." }
+        ]
+      },
+      {
+        id: 32,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Sua comunicação profissional com pares e superiores é estruturada predominantemente de forma:",
+        options: [
+          { key: "A", code: "D", text: "Direta, sucinta, objetiva e orientada a metas e resultados imediatos." },
+          { key: "B", code: "I", text: "Expressiva, calorosa, persuasiva e focada em conexão interpessoal." },
+          { key: "C", code: "S", text: "Moderada, empática, paciente e focada na escuta atenta e cooperação." },
+          { key: "D", code: "C", text: "Formal, analítica, detalhada e fundamentada em fatos, normas e documentos." }
+        ]
+      },
+      {
+        id: 33,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Diante de um feedback crítico referente a uma entrega recente, sua reação imediata tende a ser:",
+        options: [
+          { key: "A", code: "D", text: "Encarar a crítica como um desafio direto para corrigir a rota e superar a meta rápido." },
+          { key: "B", code: "I", text: "Conversar abertamente com o emissor para alinhar percepções e preservar o vínculo." },
+          { key: "C", code: "S", text: "Absorver a observação com serenidade, ajustando a postura de maneira estável e colaborativa." },
+          { key: "D", code: "C", text: "Verificar a fundamentação objetiva da crítica comparando-a com os critérios acordados." }
+        ]
+      },
+      {
+        id: 34,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Qual elemento proporciona a maior sensação de realização no cotidiano de trabalho?",
+        options: [
+          { key: "A", code: "D", text: "Exercer autonomia decisória, superar obstáculos e bater metas desafiadoras." },
+          { key: "B", code: "I", text: "Obter visibilidade, influenciar positivamente pessoas e receber reconhecimento do grupo." },
+          { key: "C", code: "S", text: "Fazer parte de uma equipe leal, coesa e atuar em um ambiente harmônico e previsível." },
+          { key: "D", code: "C", text: "Entregar um trabalho tecnicamente impecável, preciso e em total conformidade." }
+        ]
+      },
+      {
+        id: 35,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Ao receber uma tarefa complexa sem instruções detalhadas, como você costuma agir?",
+        options: [
+          { key: "A", code: "D", text: "Define o objetivo final por conta própria e inicia a execução imediatamente." },
+          { key: "B", code: "I", text: "Reúne pessoas-chave para trocar ideias e construir energia coletiva em torno da solução." },
+          { key: "C", code: "S", text: "Busca referências de como tarefas semelhantes foram feitas para manter a segurança." },
+          { key: "D", code: "C", text: "Solicita esclarecimentos formais e estrutura um plano lógico antes de dar o primeiro passo." }
+        ]
+      },
+      {
+        id: 36,
+        module: 3,
+        extendedOnly: false,
+        moduleTitle: "Módulo III: Estilo Comportamental e Reação (Base DISC)",
+        text: "Quando surge um conflito aberto de opiniões entre dois colegas de equipe, sua postura é:",
+        options: [
+          { key: "A", code: "D", text: "Intervir de forma firme para encerrar a discussão e definir logo o encaminhamento prático." },
+          { key: "B", code: "I", text: "Desarmar a tensão com otimismo e diálogo, aproximando os dois lados verbalmente." },
+          { key: "C", code: "S", text: "Ouvir ambos com paciência e empatia, buscando restaurar a paz e o respeito mútuo." },
+          { key: "D", code: "C", text: "Analisar imparcialmente os fatos e regras envolvidas para apontar a solução mais correta." }
+        ]
+      },
+      {
+        id: 37,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Quando precisa tomar uma decisão importante dispondo apenas de 70% das informações necessárias:",
+        options: [
+          { key: "A", code: "D", text: "Decide na hora com base na intuição prática e ajusta o curso durante a execução." },
+          { key: "B", code: "I", text: "Consulta pessoas de confiança para validar a impressão e decide com otimismo." },
+          { key: "C", code: "S", text: "Avalia o impacto da escolha sobre a rotina da equipe antes de confirmar o passo." },
+          { key: "D", code: "C", text: "Adia a decisão o máximo possível para levantar os 30% de dados faltantes." }
+        ]
+      },
+      {
+        id: 38,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Ao delegar ou dividir responsabilidades em um projeto conjunto, você tende a:",
+        options: [
+          { key: "A", code: "D", text: "Definir o resultado esperado e o prazo final, deixando o método livre para cada um." },
+          { key: "B", code: "I", text: "Motivar os envolvidos destacando os talentos de cada um e o impacto da entrega." },
+          { key: "C", code: "S", text: "Acompanhar de perto com apoio constante, garantindo que ninguém se sinta sobrecarregado." },
+          { key: "D", code: "C", text: "Especificar padrões técnicos, formatos de entrega e pontos de controle de qualidade." }
+        ]
+      },
+      {
+        id: 39,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Ao apresentar uma proposta nova para um público cético ou resistente, sua estratégia principal é:",
+        options: [
+          { key: "A", code: "D", text: "Mostrar diretamente o ganho de eficiência, o retorno prático e o custo de não agir." },
+          { key: "B", code: "I", text: "Contar uma narrativa envolvente, criar rapport e entusiasmar a audiência com a visão." },
+          { key: "C", code: "S", text: "Demonstrar segurança, mostrar que a transição será suave e ouvir todas as objeções." },
+          { key: "D", code: "C", text: "Apresentar gráficos, evidências técnicas, benchmarks e análise detalhada de mitigação de riscos." }
+        ]
+      },
+      {
+        id: 40,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Quando uma falha operacional relevante é identificada perto do prazo de entrega:",
+        options: [
+          { key: "A", code: "D", text: "Assume o controle imediato, corta etapas não essenciais e foca em salvar a entrega." },
+          { key: "B", code: "I", text: "Comunica os envolvidos com transparência e mobiliza ajuda rápida da rede de contatos." },
+          { key: "C", code: "S", text: "Mantém a calma da equipe, evita pânico e organiza a correção passo a passo." },
+          { key: "D", code: "C", text: "Rastreia exatamente onde o protocolo falhou para corrigir o erro sem gerar efeitos colaterais." }
+        ]
+      },
+      {
+        id: 41,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Em relação à gestão do próprio tempo e cumprimento de prazos, seu padrão habitual é:",
+        options: [
+          { key: "A", code: "D", text: "Trabalhar em ritmo acelerado, priorizando o que traz maior impacto e delegando o resto." },
+          { key: "B", code: "I", text: "Manter agenda dinâmica e flexível, rendendo mais quando há interação e prazos estimulantes." },
+          { key: "C", code: "S", text: "Seguir um ritmo constante, metódico e regular, evitando correrias de última hora." },
+          { key: "D", code: "C", text: "Planejar antecipadamente com margens de segurança e revisões rigorosas antes do envio." }
+        ]
+      },
+      {
+        id: 42,
+        module: 3,
+        extendedOnly: true,
+        moduleTitle: "Módulo III (Aprofundamento): Dinâmica Situacional DISC",
+        text: "Em cenários organizacionais de alta incerteza e reestruturação, você naturalmente atua como:",
+        options: [
+          { key: "A", code: "D", text: "O desbravador que toma decisões difíceis e abre caminho em meio ao caos." },
+          { key: "B", code: "I", text: "O comunicador que mantém o moral elevado e conecta diferentes grupos." },
+          { key: "C", code: "S", text: "O ponto de equilíbrio que preserva a continuidade operacional e acolhe as pessoas." },
+          { key: "D", code: "C", text: "O guardião da qualidade que assegura rigor técnico e governança durante a transição." }
         ]
       }
     ];
@@ -778,6 +1188,7 @@
     };
 
     let state = {
+      mode: "standard",
       currentView: "interview",
       currentQuestionIndex: 0,
       answers: {},
@@ -789,6 +1200,60 @@
       schein: null,
       disc: null
     };
+
+    function getActiveQuestions() {
+      if (state.mode === "extended") {
+        return QUESTIONS;
+      }
+      return QUESTIONS.filter(q => !q.extendedOnly);
+    }
+
+    function getMaxPerDimension() {
+      if (state.mode === "extended") {
+        return { riasec: 12, schein: 7, disc: 14, total: 42 };
+      }
+      return { riasec: 8, schein: 4, disc: 8, total: 24 };
+    }
+
+    function setQuizMode(newMode) {
+      if (state.mode === newMode) return;
+      state.mode = newMode;
+      const activeList = getActiveQuestions();
+      if (state.currentQuestionIndex >= activeList.length) {
+        state.currentQuestionIndex = activeList.length - 1;
+      }
+      updateModeButtonsUI();
+      renderQuestion();
+      if (state.currentView === "results") {
+        renderDiagnosticDashboard();
+      }
+    }
+
+    function upgradeToExtended() {
+      state.mode = "extended";
+      updateModeButtonsUI();
+      const activeList = getActiveQuestions();
+      const firstUnansweredIdx = activeList.findIndex(q => !state.answers[q.id]);
+      state.currentQuestionIndex = firstUnansweredIdx >= 0 ? firstUnansweredIdx : 0;
+      switchView("interview");
+      renderQuestion();
+    }
+
+    function updateModeButtonsUI() {
+      const btnStd = document.getElementById("btn-mode-standard");
+      const btnExt = document.getElementById("btn-mode-extended");
+      const desc = document.getElementById("mode-description");
+
+      if (state.mode === "standard") {
+        btnStd.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#1E4D5C] text-white shadow-sm";
+        btnExt.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-[#4A504D] hover:text-[#262A28]";
+        desc.innerHTML = "<strong>Modo Padrão (24 questões):</strong> 8 questões por módulo (~5 min). Equilíbrio ideal entre agilidade e precisão.";
+      } else {
+        btnExt.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#1E4D5C] text-white shadow-sm";
+        btnStd.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-[#4A504D] hover:text-[#262A28]";
+        desc.innerHTML = "<strong>Modo Estendido (42 questões):</strong> 14 questões por módulo (~9 min). Máxima resolução estatística e desempate fino entre dimensões.";
+      }
+    }
 
     function wrapLabel(text, maxChars) {
       if (!text || text.length <= maxChars) return text;
@@ -844,27 +1309,32 @@
     }
 
     function updateProgressUI() {
-      const total = QUESTIONS.length;
-      const answeredIds = Object.keys(state.answers).map(Number);
-      const answeredCount = answeredIds.length;
+      const activeList = getActiveQuestions();
+      const total = activeList.length;
+      const answeredCount = activeList.filter(q => Boolean(state.answers[q.id])).length;
       const percent = Math.round((answeredCount / total) * 100);
 
-      document.getElementById("results-badge").textContent = answeredCount + "/14";
+      const badge = document.getElementById("results-badge");
+      badge.textContent = answeredCount + "/" + total;
       if (answeredCount === total) {
-        document.getElementById("results-badge").className = "text-xs px-1.5 py-0.5 rounded bg-[#4A7C6F] text-white font-bold";
+        badge.className = "text-xs px-1.5 py-0.5 rounded bg-[#4A7C6F] text-white font-bold";
       } else {
-        document.getElementById("results-badge").className = "text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]";
+        badge.className = "text-xs px-1.5 py-0.5 rounded bg-[#E6E2D8] text-[#4A504D]";
       }
 
-      const mod1Count = [1, 2, 3, 4].filter(id => state.answers[id]).length;
-      const mod2Count = [5, 6, 7, 8].filter(id => state.answers[id]).length;
-      const mod3Count = [9, 10, 11, 12, 13, 14].filter(id => state.answers[id]).length;
+      const mod1Questions = activeList.filter(q => q.module === 1);
+      const mod2Questions = activeList.filter(q => q.module === 2);
+      const mod3Questions = activeList.filter(q => q.module === 3);
 
-      document.getElementById("mod-count-1").textContent = mod1Count + "/4";
-      document.getElementById("mod-count-2").textContent = mod2Count + "/4";
-      document.getElementById("mod-count-3").textContent = mod3Count + "/6";
+      const mod1Count = mod1Questions.filter(q => state.answers[q.id]).length;
+      const mod2Count = mod2Questions.filter(q => state.answers[q.id]).length;
+      const mod3Count = mod3Questions.filter(q => state.answers[q.id]).length;
 
-      const currentQ = QUESTIONS[state.currentQuestionIndex];
+      document.getElementById("mod-count-1").textContent = mod1Count + "/" + mod1Questions.length;
+      document.getElementById("mod-count-2").textContent = mod2Count + "/" + mod2Questions.length;
+      document.getElementById("mod-count-3").textContent = mod3Count + "/" + mod3Questions.length;
+
+      const currentQ = activeList[state.currentQuestionIndex];
       [1, 2, 3].forEach(m => {
         const card = document.getElementById("mod-card-" + m);
         if (currentQ.module === m) {
@@ -880,12 +1350,12 @@
 
       const dotsContainer = document.getElementById("question-dots");
       dotsContainer.innerHTML = "";
-      QUESTIONS.forEach((q, idx) => {
+      activeList.forEach((q, idx) => {
         const isAnswered = Boolean(state.answers[q.id]);
         const isCurrent = idx === state.currentQuestionIndex;
         const dot = document.createElement("button");
         dot.type = "button";
-        dot.textContent = q.id;
+        dot.textContent = idx + 1;
         dot.onclick = () => {
           state.currentQuestionIndex = idx;
           renderQuestion();
@@ -904,9 +1374,10 @@
     }
 
     function renderQuestion() {
-      const q = QUESTIONS[state.currentQuestionIndex];
+      const activeList = getActiveQuestions();
+      const q = activeList[state.currentQuestionIndex];
       document.getElementById("q-module-badge").textContent = q.moduleTitle;
-      document.getElementById("q-text").textContent = q.text;
+      document.getElementById("q-text").textContent = (state.currentQuestionIndex + 1) + ". " + q.text;
 
       const optionsContainer = document.getElementById("q-options");
       optionsContainer.innerHTML = "";
@@ -937,8 +1408,9 @@
 
       document.getElementById("btn-prev").disabled = state.currentQuestionIndex === 0;
 
-      const isLast = state.currentQuestionIndex === QUESTIONS.length - 1;
-      const allAnswered = Object.keys(state.answers).length === QUESTIONS.length;
+      const isLast = state.currentQuestionIndex === activeList.length - 1;
+      const answeredCount = activeList.filter(item => Boolean(state.answers[item.id])).length;
+      const allAnswered = answeredCount === activeList.length;
 
       const btnNext = document.getElementById("btn-next");
       const btnFinish = document.getElementById("btn-finish");
@@ -962,18 +1434,21 @@
       state.answers[questionId] = optionKey;
       renderQuestion();
 
+      const activeList = getActiveQuestions();
+      const answeredCount = activeList.filter(item => Boolean(state.answers[item.id])).length;
       const autoAdvance = document.getElementById("auto-advance-toggle").checked;
-      if (autoAdvance && state.currentQuestionIndex < QUESTIONS.length - 1) {
+
+      if (autoAdvance && state.currentQuestionIndex < activeList.length - 1) {
         setTimeout(() => {
-          if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+          if (state.currentQuestionIndex < activeList.length - 1) {
             state.currentQuestionIndex++;
             renderQuestion();
           }
-        }, 280);
-      } else if (autoAdvance && Object.keys(state.answers).length === QUESTIONS.length) {
+        }, 260);
+      } else if (autoAdvance && answeredCount === activeList.length) {
         setTimeout(() => {
           switchView("results");
-        }, 420);
+        }, 400);
       }
     }
 
@@ -985,7 +1460,8 @@
     }
 
     function nextQuestion() {
-      if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+      const activeList = getActiveQuestions();
+      if (state.currentQuestionIndex < activeList.length - 1) {
         state.currentQuestionIndex++;
         renderQuestion();
       }
@@ -1003,55 +1479,70 @@
 
     function fillDemoProfile() {
       state.answers = {
-        1: "B",
-        2: "B",
-        3: "C",
-        4: "B",
-        5: "C",
-        6: "C",
-        7: "A",
-        8: "C",
-        9: "D",
-        10: "D",
-        11: "D",
-        12: "D",
-        13: "D",
-        14: "D"
+        1: "B", 2: "B", 3: "C", 4: "B", 5: "B", 6: "B", 7: "B", 8: "B",
+        9: "B", 10: "D", 11: "A", 12: "B", 13: "A", 14: "B",
+        15: "A", 16: "B", 17: "A", 18: "B", 19: "A", 20: "D", 21: "A", 22: "A",
+        23: "A", 24: "B", 25: "A", 26: "C", 27: "A", 28: "D",
+        29: "D", 30: "D", 31: "D", 32: "D", 33: "D", 34: "D", 35: "D", 36: "D",
+        37: "D", 38: "D", 39: "D", 40: "D", 41: "D", 42: "D"
       };
-      state.currentQuestionIndex = QUESTIONS.length - 1;
+      const activeList = getActiveQuestions();
+      state.currentQuestionIndex = activeList.length - 1;
       updateProgressUI();
       switchView("results");
     }
 
     function computeScores() {
+      const activeList = getActiveQuestions();
+      const maxDims = getMaxPerDimension();
       const riasec = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
       const schein = { TF: 0, GG: 0, AU: 0, SE: 0, EC: 0, SV: 0, CH: 0, LS: 0 };
       const disc = { D: 0, I: 0, S: 0, C: 0 };
 
-      QUESTIONS.forEach(q => {
+      let answeredCount = 0;
+
+      activeList.forEach(q => {
         const chosenKey = state.answers[q.id];
         if (!chosenKey) return;
         const opt = q.options.find(o => o.key === chosenKey);
         if (!opt) return;
+        answeredCount++;
         if (q.module === 1) riasec[opt.code]++;
         if (q.module === 2) schein[opt.code]++;
         if (q.module === 3) disc[opt.code]++;
       });
 
       const riasecSorted = Object.keys(riasec)
-        .map(k => ({ code: k, score: riasec[k], meta: RIASEC_META[k] }))
+        .map(k => ({
+          code: k,
+          score: riasec[k],
+          pct: Math.round((riasec[k] / maxDims.riasec) * 100),
+          meta: RIASEC_META[k]
+        }))
         .sort((a, b) => b.score - a.score);
 
       const scheinSorted = Object.keys(schein)
-        .map(k => ({ code: k, score: schein[k], meta: SCHEIN_META[k] }))
+        .map(k => ({
+          code: k,
+          score: schein[k],
+          pct: Math.round((schein[k] / maxDims.schein) * 100),
+          meta: SCHEIN_META[k]
+        }))
         .sort((a, b) => b.score - a.score);
 
       const discSorted = Object.keys(disc)
-        .map(k => ({ code: k, score: disc[k], meta: DISC_META[k] }))
+        .map(k => ({
+          code: k,
+          score: disc[k],
+          pct: Math.round((disc[k] / maxDims.disc) * 100),
+          meta: DISC_META[k]
+        }))
         .sort((a, b) => b.score - a.score);
 
       return {
-        answeredCount: Object.keys(state.answers).length,
+        answeredCount,
+        totalActive: activeList.length,
+        maxDims,
         riasec,
         schein,
         disc,
@@ -1064,9 +1555,21 @@
     function renderDiagnosticDashboard() {
       const data = computeScores();
       const alertBox = document.getElementById("incomplete-alert");
-      if (data.answeredCount < QUESTIONS.length) {
+      const modeTag = document.getElementById("results-mode-tag");
+      const btnUpgrade = document.getElementById("btn-upgrade-extended");
+
+      if (state.mode === "standard") {
+        modeTag.textContent = "Base: Versão Padrão (24 questões)";
+        btnUpgrade.classList.remove("hidden");
+      } else {
+        modeTag.textContent = "Base: Versão Estendida (42 questões)";
+        btnUpgrade.classList.add("hidden");
+      }
+
+      if (data.answeredCount < data.totalActive) {
         alertBox.classList.remove("hidden");
         document.getElementById("alert-answered-count").textContent = data.answeredCount;
+        document.getElementById("alert-total-count").textContent = data.totalActive;
       } else {
         alertBox.classList.add("hidden");
       }
@@ -1074,7 +1577,7 @@
       const top3Riasec = data.riasecSorted.slice(0, 3);
       const hollandCode = data.answeredCount > 0
         ? top3Riasec.map(item => item.code).join(" - ")
-        : "I - A - S";
+        : "I - A - C";
       const primaryRiasec = data.answeredCount > 0 ? top3Riasec[0].meta : RIASEC_META.I;
 
       const primarySchein = data.answeredCount > 0 ? data.scheinSorted[0].meta : SCHEIN_META.TF;
@@ -1102,25 +1605,39 @@
       const narrativeEl = document.getElementById("consultant-narrative");
       narrativeEl.innerHTML =
         "<p><strong>1. Conteúdo que energiza sua rotina (Código Holland " + hollandCode + "):</strong> " +
-        "Seu vetor vocacional primário é <strong>" + primaryRiasec.name + "</strong>, apoiado pelos vetores <strong>" + top3Riasec[1].meta.name + "</strong> e <strong>" + top3Riasec[2].meta.name + "</strong>. " +
-        "Na prática, você atinge maior estado de fluxo em áreas ligadas a " + primaryRiasec.careers.toLowerCase() + "</p>" +
+        "Seu vetor vocacional primário é <strong>" + primaryRiasec.name + "</strong> (" + data.riasecSorted[0].pct + "% de afinidade), apoiado pelos vetores <strong>" + top3Riasec[1].meta.name + "</strong> e <strong>" + top3Riasec[2].meta.name + "</strong>. " +
+        "Na prática, você atinge maior estado de fluxo em atividades ligadas a " + primaryRiasec.careers.toLowerCase() + "</p>" +
         "<p><strong>2. Seu critério inegociável de decisão (Âncora " + primarySchein.name + "):</strong> " +
-        "De acordo com o modelo de Edgar Schein, o pilar que sustenta sua satisfação profissional é <em>" + primarySchein.value.toLowerCase() + "</em> " +
-        "Propostas que violem esse valor gerarão desgaste rápido, mesmo com ganhos financeiros imediatos.</p>" +
+        "No modelo de Edgar Schein, o pilar que sustenta sua satisfação profissional é <em>" + primarySchein.value.toLowerCase() + "</em> " +
+        (secondarySchein ? "Sua âncora secundária em <strong>" + secondarySchein.name + "</strong> atua como critério complementar de ajuste cultural." : "") + "</p>" +
         "<p><strong>3. Sua dinâmica comportamental observável (DISC " + primaryDisc.name + " + " + secondaryDisc.name + "):</strong> " +
         "Você opera predominantemente de modo <em>" + primaryDisc.style.toLowerCase() + "</em> " +
         "Seu principal gatilho de estresse ocupacional ocorre diante de: " + primaryDisc.stress.toLowerCase() + "</p>";
 
+      const riasecSpread = data.riasecSorted[0].pct - data.riasecSorted[2].pct;
+      const scheinSpread = data.scheinSorted[0].pct - data.scheinSorted[1].pct;
+      const discSpread = data.discSorted[0].pct - data.discSorted[1].pct;
+
+      const sharpnessEl = document.getElementById("profile-sharpness-box");
+      const riasecType = riasecSpread >= 25 ? "Especializado (foco claro em um eixo)" : "Versátil / Multipotencial (interesses distribuídos)";
+      const scheinType = scheinSpread >= 25 ? "Âncora Única Bem Definida" : "Perfil Dual de Valores (negociação dupla)";
+      const discType = discSpread >= 25 ? "Estilo Comportamental Predominante" : "Adaptabilidade Situacional Equilibrada";
+
+      sharpnessEl.innerHTML =
+        "<p><strong>Interesses:</strong> " + riasecType + " (diferença de " + riasecSpread + " p.p. entre o 1º e o 3º vetor).</p>" +
+        "<p><strong>Valores:</strong> " + scheinType + " (vantagem de " + scheinSpread + " p.p. sobre a 2ª âncora).</p>" +
+        "<p><strong>Comportamento:</strong> " + discType + " (vantagem de " + discSpread + " p.p. sobre o estilo secundário).</p>";
+
       document.getElementById("riasec-breakdown").innerHTML = top3Riasec.map((item, idx) =>
-        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#1E4D5C]'>" + item.score + " pt(s)</span></div>"
+        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#1E4D5C]'>" + item.score + "/" + data.maxDims.riasec + " (" + item.pct + "%)</span></div>"
       ).join("");
 
       document.getElementById("schein-breakdown").innerHTML = data.scheinSorted.slice(0, 3).map((item, idx) =>
-        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + "</strong></span><span class='font-semibold text-[#4B5B82]'>" + item.score + " pt(s)</span></div>"
+        "<div class='flex items-center justify-between'><span><strong>" + (idx + 1) + "º " + item.meta.name + "</strong></span><span class='font-semibold text-[#4B5B82]'>" + item.score + "/" + data.maxDims.schein + " (" + item.pct + "%)</span></div>"
       ).join("");
 
-      document.getElementById("disc-breakdown").innerHTML = data.discSorted.map((item, idx) =>
-        "<div class='flex items-center justify-between'><span><strong>" + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#9A6E27]'>" + item.score + " / 6</span></div>"
+      document.getElementById("disc-breakdown").innerHTML = data.discSorted.map(item =>
+        "<div class='flex items-center justify-between'><span><strong>" + item.meta.name + " (" + item.code + ")</strong></span><span class='font-semibold text-[#9A6E27]'>" + item.score + "/" + data.maxDims.disc + " (" + item.pct + "%)</span></div>"
       ).join("");
 
       const ecosystemEl = document.getElementById("ecosystem-card");
@@ -1176,6 +1693,7 @@
     function renderCharts(data) {
       const riasecLabels = ["Realista (R)", "Investigativo (I)", "Artístico (A)", "Social (S)", "Empreendedor (E)", "Convencional (C)"];
       const riasecValues = ["R", "I", "A", "S", "E", "C"].map(k => data.riasec[k]);
+      const riasecStep = state.mode === "extended" ? 3 : 2;
 
       if (charts.riasec) charts.riasec.destroy();
       const ctxR = document.getElementById("chart-riasec").getContext("2d");
@@ -1199,8 +1717,8 @@
           scales: {
             r: {
               beginAtZero: true,
-              max: 4,
-              ticks: { stepSize: 1, font: { size: 10 }, backdropColor: "transparent" },
+              max: data.maxDims.riasec,
+              ticks: { stepSize: riasecStep, font: { size: 10 }, backdropColor: "transparent" },
               pointLabels: { font: { size: 11, weight: "600" }, color: "#262A28" },
               grid: { color: "#E6E2D8" },
               angleLines: { color: "#E6E2D8" }
@@ -1212,7 +1730,8 @@
               enabled: true,
               callbacks: {
                 label: function(ctx) {
-                  return "Frequência: " + ctx.raw + " de 4 questões";
+                  const pct = Math.round((ctx.raw / data.maxDims.riasec) * 100);
+                  return "Pontuação: " + ctx.raw + " de " + data.maxDims.riasec + " (" + pct + "%)";
                 }
               }
             }
@@ -1244,7 +1763,7 @@
           scales: {
             x: {
               beginAtZero: true,
-              max: 4,
+              max: data.maxDims.schein,
               ticks: { stepSize: 1, font: { size: 10 } },
               grid: { color: "#F2EFE9" }
             },
@@ -1263,7 +1782,8 @@
                   return SCHEIN_META[scheinOrder[idx]].name;
                 },
                 label: function(ctx) {
-                  return "Escolhas: " + ctx.raw + " de 4 questões";
+                  const pct = Math.round((ctx.raw / data.maxDims.schein) * 100);
+                  return "Escolhas: " + ctx.raw + " de " + data.maxDims.schein + " aparições (" + pct + "%)";
                 }
               }
             }
@@ -1302,8 +1822,8 @@
               callbacks: {
                 label: function(ctx) {
                   const realVal = discValues[ctx.dataIndex];
-                  const pct = Math.round((realVal / 6) * 100);
-                  return ctx.label + ": " + realVal + " pts (" + pct + "%)";
+                  const pct = Math.round((realVal / data.maxDims.disc) * 100);
+                  return ctx.label + ": " + realVal + "/" + data.maxDims.disc + " pts (" + pct + "%)";
                 }
               }
             }
@@ -1355,6 +1875,7 @@
       });
     }
 
+    updateModeButtonsUI();
     renderQuestion();
     renderMatrixCards();
   </script>
