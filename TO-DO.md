@@ -16,7 +16,7 @@ Este documento reúne melhorias planejadas para expandir as funcionalidades, a p
 
 ## 3. Aprofundamento Psicométrico e Analítico
 
-- [ ] **Modo de Entrevista Estendida (Opcional):** Oferecer ao usuário a escolha entre o modo rápido (14 questões) e o modo aprofundado (28 ou 42 questões) para aumentar a granulometria estatística e reduzir empates entre dimensões.
+- [x] **Modo de Entrevista Estendida (Opcional):** Oferecer ao usuário a escolha entre o modo padrão revisado (24 questões com pareamento balanceado) e o modo aprofundado (42 questões) para aumentar a granulometria estatística e reduzir empates entre dimensões.
 - [ ] **Análise Dinâmica de Perfis Híbridos:** Expandir o motor de regras para gerar pareceres específicos com base no cruzamento exato das três letras do Código Holland (RIASEC) combinadas ao perfil DISC primário e secundário.
 - [ ] **Guia de Preparação para Entrevistas:** Incluir uma aba ou seção complementar no diagnóstico traduzindo os pontos fortes e pontos cegos identificados em argumentos práticos para processos seletivos e negociações de carreira.
 
